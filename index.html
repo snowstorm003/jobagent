@@ -630,11 +630,10 @@ async function send() {
   const apiMessages = history.slice(-20).map(m => ({role: m.role, content: m.content}));
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('https://anthropic-proxy.tusharmukhopadhyay03.workers.dev', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'anthropic-version': '2023-06-01'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
