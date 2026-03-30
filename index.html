@@ -3,337 +3,368 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>JobAgent — AI-powered job search</title>
+<title>Ayein — Your Personal Job Search AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+:root {
+  --bg:       #F5F3EE;
+  --surface:  #FFFFFF;
+  --surface2: #F0EDE6;
+  --text:     #1C1917;
+  --muted:    #78716C;
+  --hint:     #A8A29E;
+  --border:   rgba(0,0,0,0.08);
+  --border2:  rgba(0,0,0,0.14);
+  --green:    #1D9E75;
+  --green-d:  #0F6E56;
+  --green-l:  #E1F5EE;
+  --green-t:  #085041;
+  --radius:   14px;
+}
+
+@media (prefers-color-scheme: dark) {
   :root {
-    --bg: #ffffff;
-    --bg2: #f7f7f5;
-    --bg3: #f0efe9;
-    --text: #1a1a18;
-    --muted: #6b6b67;
-    --hint: #a0a09c;
-    --border: rgba(0,0,0,0.1);
-    --border2: rgba(0,0,0,0.18);
-    --radius: 12px;
-    --accent: #1D9E75;
-    --accent-dark: #0F6E56;
-    --accent-light: #E1F5EE;
-    --accent-text: #085041;
+    --bg:      #141412;
+    --surface: #1E1D1B;
+    --surface2:#252420;
+    --text:    #F5F0E8;
+    --muted:   #A8A29E;
+    --hint:    #6B6762;
+    --border:  rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --green-l: #0a2e22;
+    --green-t: #9FE1CB;
   }
+}
 
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #1c1c1a;
-      --bg2: #242422;
-      --bg3: #2c2c2a;
-      --text: #f0efe9;
-      --muted: #a0a09c;
-      --hint: #6b6b67;
-      --border: rgba(255,255,255,0.1);
-      --border2: rgba(255,255,255,0.18);
-      --accent-light: #0a2e22;
-      --accent-text: #9FE1CB;
-    }
-  }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 20px 16px 48px;
+}
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: var(--bg3);
-    color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 24px 16px 40px;
-  }
+.app {
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
-  .container {
-    width: 100%;
-    max-width: 680px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
+/* HEADER */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+}
 
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 20px;
-    background: var(--bg);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius);
-  }
+.logo-row { display: flex; align-items: center; gap: 10px; }
 
-  .logo-row { display: flex; align-items: center; gap: 10px; }
+.logo {
+  width: 38px; height: 38px;
+  background: var(--green);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+}
+.logo svg { width: 20px; height: 20px; }
 
-  .logo {
-    width: 36px; height: 36px;
-    background: var(--accent);
-    border-radius: 9px;
-    display: flex; align-items: center; justify-content: center;
-  }
+.app-name {
+  font-family: 'Instrument Serif', serif;
+  font-size: 20px;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
 
-  .logo svg { width: 20px; height: 20px; }
-  .app-title { font-size: 16px; font-weight: 600; color: var(--text); }
-  .app-sub { font-size: 12px; color: var(--muted); margin-top: 1px; }
+.app-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
 
-  .badge {
-    font-size: 10px;
-    padding: 3px 9px;
-    border-radius: 8px;
-    border: 0.5px solid;
-    font-weight: 500;
-  }
+.header-actions { display: flex; gap: 6px; align-items: center; }
 
-  .badge-apify { background: #EEEDFE; border-color: #AFA9EC; color: #26215C; }
-  .badge-ai { background: var(--accent-light); border-color: #5DCAA5; color: var(--accent-text); }
+.pill {
+  font-size: 10px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  border: 0.5px solid;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.pill-apify { background: #EEEDFE; border-color: #AFA9EC; color: #26215C; }
+.pill-ai    { background: var(--green-l); border-color: #5DCAA5; color: var(--green-t); }
 
-  .profile-bar {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    padding: 10px 16px;
-    background: var(--bg);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius);
-  }
+/* MEMORY BAR */
+.memory-bar {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  padding: 9px 14px;
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  align-items: center;
+}
 
-  .chip {
-    font-size: 11px;
-    padding: 3px 10px;
-    border-radius: 12px;
-    border: 0.5px solid var(--border2);
-    color: var(--muted);
-    background: var(--bg2);
-    white-space: nowrap;
-  }
+.memory-label {
+  font-size: 10px;
+  color: var(--hint);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-right: 2px;
+}
 
-  .chip.filled {
-    background: var(--accent-light);
-    border-color: #5DCAA5;
-    color: var(--accent-text);
-    font-weight: 500;
-  }
+.mem-chip {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 0.5px solid var(--border2);
+  color: var(--muted);
+  background: var(--surface2);
+  white-space: nowrap;
+}
+.mem-chip.set {
+  background: var(--green-l);
+  border-color: #5DCAA5;
+  color: var(--green-t);
+  font-weight: 500;
+}
 
-  .chat-card {
-    background: var(--bg);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
+/* CHAT CARD */
+.chat-card {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
 
-  .messages {
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    min-height: 360px;
-    max-height: 500px;
-    overflow-y: auto;
-    scroll-behavior: smooth;
-  }
+.messages {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 380px;
+  max-height: 520px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
 
-  .msg { display: flex; gap: 8px; align-items: flex-start; }
-  .msg.user { flex-direction: row-reverse; }
+.messages::-webkit-scrollbar { width: 3px; }
+.messages::-webkit-scrollbar-track { background: transparent; }
+.messages::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
 
-  .avatar {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 10px; font-weight: 600;
-  }
+.msg { display: flex; gap: 8px; align-items: flex-start; }
+.msg.user { flex-direction: row-reverse; }
 
-  .avatar.agent { background: var(--accent-light); color: var(--accent-text); }
-  .avatar.user { background: var(--bg3); color: var(--muted); }
+.av {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 600;
+}
+.av.agent { background: var(--green-l); color: var(--green-t); }
+.av.user  { background: var(--surface2); color: var(--muted); }
 
-  .bubble {
-    max-width: 82%;
-    font-size: 13.5px;
-    line-height: 1.65;
-    padding: 10px 14px;
-    border-radius: 16px;
-    border: 0.5px solid var(--border);
-    background: var(--bg2);
-    color: var(--text);
-  }
+.bubble {
+  max-width: 83%;
+  font-size: 13.5px;
+  line-height: 1.68;
+  padding: 10px 14px;
+  border-radius: 16px;
+  border: 0.5px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+}
+.msg.user  .bubble { background: var(--green-l); border-color: #9FE1CB; color: var(--green-t); border-radius: 16px 4px 16px 16px; }
+.msg.agent .bubble { border-radius: 4px 16px 16px 16px; }
 
-  .msg.user .bubble {
-    background: var(--accent-light);
-    border-color: #9FE1CB;
-    color: var(--accent-text);
-    border-radius: 16px 4px 16px 16px;
-  }
+/* JOB CARDS */
+.job-cards { display: flex; flex-direction: column; gap: 7px; margin-top: 9px; }
+.jcard {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 11px;
+  padding: 10px 13px;
+}
+.jcard-title { font-size: 13px; font-weight: 500; color: var(--text); }
+.jcard-co { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.jtags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px; }
+.jtag { font-size: 10px; padding: 2px 7px; border-radius: 8px; border: 0.5px solid var(--border2); color: var(--muted); background: var(--surface2); }
+.jtag.li  { background: #E6F1FB; border-color: #85B7EB; color: #0C447C; }
+.jtag.ind { background: #FAECE7; border-color: #F0997B; color: #4A1B0C; }
+.jcard-desc { font-size: 11.5px; color: var(--muted); margin-top: 5px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.jcard-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
+.jcard-link { font-size: 12px; color: var(--green); text-decoration: none; font-weight: 500; }
+.jcard-link:hover { text-decoration: underline; }
 
-  .msg.agent .bubble { border-radius: 4px 16px 16px 16px; }
+/* QUICK BUTTONS */
+.quick-wrap {
+  display: flex; gap: 5px; flex-wrap: wrap;
+  padding: 9px 14px;
+  border-top: 0.5px solid var(--border);
+  background: var(--surface2);
+}
 
-  .job-cards { display: flex; flex-direction: column; gap: 7px; margin-top: 8px; }
+.qbtn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px; padding: 5px 12px;
+  border-radius: 20px;
+  border: 0.5px solid var(--border2);
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.qbtn:hover { background: var(--bg); color: var(--text); }
 
-  .jcard {
-    background: var(--bg);
-    border: 0.5px solid var(--border);
-    border-radius: 10px;
-    padding: 10px 13px;
-  }
+/* INPUT ROW */
+.input-row {
+  display: flex; gap: 8px;
+  padding: 11px 14px;
+  border-top: 0.5px solid var(--border);
+}
 
-  .jcard-title { font-size: 13px; font-weight: 600; color: var(--text); }
-  .jcard-co { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.chat-input {
+  flex: 1;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13.5px;
+  border: 0.5px solid var(--border2);
+  border-radius: 10px;
+  padding: 9px 13px;
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.chat-input:focus { border-color: var(--green); }
+.chat-input::placeholder { color: var(--hint); }
 
-  .jtags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px; }
+.send-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 500;
+  padding: 9px 18px;
+  border-radius: 10px;
+  border: none;
+  background: var(--green);
+  color: #fff;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.send-btn:hover { background: var(--green-d); }
+.send-btn:disabled { background: var(--surface2); color: var(--hint); cursor: not-allowed; }
 
-  .jtag {
-    font-size: 10px; padding: 2px 7px;
-    border-radius: 8px; border: 0.5px solid var(--border2);
-    color: var(--muted); background: var(--bg2);
-  }
+/* PROFILE PANEL */
+.profile-panel {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.panel-head {
+  padding: 11px 16px;
+  background: var(--surface2);
+  border-bottom: 0.5px solid var(--border);
+  font-size: 13px; font-weight: 500;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.panel-head-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 15px;
+  color: var(--text);
+}
+.panel-actions { display: flex; gap: 6px; }
+.panel-body { padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
 
-  .jtag.li { background: #E6F1FB; border-color: #85B7EB; color: #0C447C; }
-  .jtag.ind { background: #FAECE7; border-color: #F0997B; color: #4A1B0C; }
+.field-group { display: flex; flex-direction: column; gap: 3px; }
+.fkey { font-size: 10px; color: var(--hint); text-transform: uppercase; letter-spacing: 0.06em; }
+.fval { font-size: 13px; font-weight: 500; color: var(--text); }
+.fval.empty { font-weight: 400; color: var(--hint); font-size: 12px; font-style: italic; }
 
-  .jcard-desc {
-    font-size: 11.5px; color: var(--muted);
-    margin-top: 5px; line-height: 1.5;
-    display: -webkit-box; -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical; overflow: hidden;
-  }
+.field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-  .jcard-foot {
-    display: flex; align-items: center;
-    justify-content: space-between; margin-top: 8px;
-  }
+.tag-list { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 2px; }
+.stag { font-size: 11px; padding: 3px 9px; border-radius: 10px; background: var(--green-l); border: 0.5px solid #9FE1CB; color: var(--green-t); }
 
-  .jcard-link {
-    font-size: 12px; color: var(--accent);
-    text-decoration: none; font-weight: 500;
-  }
+.notes-area {
+  background: var(--surface2);
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 13px;
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.6;
+  max-height: 120px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
 
-  .jcard-link:hover { text-decoration: underline; }
+.panel-footer {
+  padding: 10px 16px;
+  border-top: 0.5px solid var(--border);
+  background: var(--surface2);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--hint);
+}
 
-  .quick-wrap {
-    display: flex; gap: 6px; flex-wrap: wrap;
-    padding: 10px 16px;
-    border-top: 0.5px solid var(--border);
-    background: var(--bg2);
-  }
+/* TOKEN SETUP */
+.token-setup {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+}
+.token-setup h3 { font-family: 'Instrument Serif', serif; font-size: 16px; font-weight: 400; margin-bottom: 6px; }
+.token-setup p { font-size: 12.5px; color: var(--muted); line-height: 1.6; margin-bottom: 10px; }
+.token-row { display: flex; gap: 8px; }
+.token-input {
+  flex: 1; font-family: 'DM Sans', sans-serif; font-size: 13px;
+  border: 0.5px solid var(--border2); border-radius: 8px;
+  padding: 8px 12px; background: var(--surface2); color: var(--text); outline: none;
+}
+.token-input:focus { border-color: var(--green); }
+.token-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  padding: 8px 16px; border-radius: 8px;
+  border: none; background: var(--green); color: #fff; cursor: pointer;
+}
+.token-btn:hover { background: var(--green-d); }
 
-  .qbtn {
-    font-size: 12px; padding: 6px 13px;
-    border-radius: 20px;
-    border: 0.5px solid var(--border2);
-    background: var(--bg);
-    color: var(--muted);
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.15s;
-  }
+/* SPINNER */
+.spinner {
+  display: inline-block; width: 13px; height: 13px;
+  border: 2px solid rgba(29,158,117,0.2);
+  border-top-color: var(--green);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  vertical-align: middle; margin-right: 5px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 
-  .qbtn:hover { background: var(--bg3); color: var(--text); }
-
-  .input-row {
-    display: flex; gap: 8px;
-    padding: 12px 16px;
-    border-top: 0.5px solid var(--border);
-  }
-
-  .chat-input {
-    flex: 1;
-    font-family: inherit;
-    font-size: 13.5px;
-    border: 0.5px solid var(--border2);
-    border-radius: 10px;
-    padding: 9px 13px;
-    background: var(--bg);
-    color: var(--text);
-    outline: none;
-    transition: border-color 0.15s;
-  }
-
-  .chat-input:focus { border-color: var(--accent); }
-  .chat-input::placeholder { color: var(--hint); }
-
-  .send-btn {
-    font-family: inherit;
-    font-size: 13px; font-weight: 600;
-    padding: 9px 18px;
-    border-radius: 10px;
-    border: none;
-    background: var(--accent);
-    color: #fff;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: background 0.15s;
-  }
-
-  .send-btn:hover { background: var(--accent-dark); }
-  .send-btn:disabled { background: var(--bg3); color: var(--hint); cursor: not-allowed; }
-
-  .profile-panel {
-    background: var(--bg);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-  }
-
-  .panel-head {
-    padding: 10px 16px;
-    background: var(--bg2);
-    border-bottom: 0.5px solid var(--border);
-    font-size: 13px; font-weight: 500;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-
-  .panel-body { padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; }
-
-  .field-row { display: flex; gap: 10px; align-items: baseline; }
-  .fkey { font-size: 12px; color: var(--muted); min-width: 110px; flex-shrink: 0; }
-  .fval { font-size: 13px; font-weight: 500; color: var(--text); }
-
-  .tag-list { display: flex; gap: 4px; flex-wrap: wrap; }
-  .stag { font-size: 11px; padding: 2px 8px; border-radius: 10px; background: var(--accent-light); border: 0.5px solid #9FE1CB; color: var(--accent-text); }
-
-  .spinner {
-    display: inline-block; width: 13px; height: 13px;
-    border: 2px solid rgba(29,158,117,0.25);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    vertical-align: middle; margin-right: 5px;
-  }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .token-setup {
-    background: var(--bg);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px 20px;
-  }
-
-  .token-setup h3 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
-  .token-setup p { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 10px; }
-  .token-input-row { display: flex; gap: 8px; }
-  .token-input {
-    flex: 1; font-family: inherit; font-size: 13px;
-    border: 0.5px solid var(--border2); border-radius: 8px;
-    padding: 8px 12px; background: var(--bg2); color: var(--text); outline: none;
-  }
-  .token-input:focus { border-color: var(--accent); }
-  .save-token-btn {
-    font-family: inherit; font-size: 13px; font-weight: 600;
-    padding: 8px 16px; border-radius: 8px;
-    border: none; background: var(--accent); color: #fff; cursor: pointer;
-  }
-  .save-token-btn:hover { background: var(--accent-dark); }
+.divider {
+  height: 0.5px; background: var(--border); margin: 6px 0;
+}
 </style>
 </head>
 <body>
-<div class="container">
+<div class="app">
 
+  <!-- HEADER -->
   <div class="header">
     <div class="logo-row">
       <div class="logo">
@@ -343,109 +374,207 @@
         </svg>
       </div>
       <div>
-        <div class="app-title">JobAgent</div>
-        <div class="app-sub">Real jobs from LinkedIn &amp; Indeed via Apify</div>
+        <div class="app-name">Ayein</div>
+        <div class="app-sub">Your AI job search companion</div>
       </div>
     </div>
-    <div style="display:flex;gap:6px;align-items:center;">
-      <span class="badge badge-apify">Apify</span>
-      <span class="badge badge-ai">Claude AI</span>
-      <button class="qbtn" onclick="toggleProfile()" style="margin-left:4px;">Profile</button>
+    <div class="header-actions">
+      <span class="pill pill-apify">Apify</span>
+      <span class="pill pill-ai">Claude AI</span>
+      <button class="qbtn" onclick="toggleProfile()" style="margin-left:2px;">My Profile</button>
     </div>
   </div>
 
-  <div class="profile-bar" id="profile-bar">
-    <span class="chip" id="chip-name">Name: —</span>
-    <span class="chip" id="chip-role">Role: —</span>
-    <span class="chip" id="chip-exp">Exp: —</span>
-    <span class="chip" id="chip-loc">Location: —</span>
-    <span class="chip" id="chip-skills">Skills: —</span>
+  <!-- MEMORY BAR -->
+  <div class="memory-bar" id="memory-bar">
+    <span class="memory-label">Remembers:</span>
+    <span class="mem-chip" id="chip-name">Name</span>
+    <span class="mem-chip" id="chip-role">Target role</span>
+    <span class="mem-chip" id="chip-exp">Experience</span>
+    <span class="mem-chip" id="chip-loc">Location</span>
+    <span class="mem-chip" id="chip-skills">Skills</span>
+    <span class="mem-chip" id="chip-notes" style="display:none;">+ notes</span>
   </div>
 
+  <!-- APIFY TOKEN SETUP -->
   <div class="token-setup" id="token-setup">
-    <h3>Enter your Apify API token to enable live job search</h3>
-    <p>Get it from <a href="https://console.apify.com/account/integrations" target="_blank" style="color:var(--accent);">console.apify.com → Settings → Integrations</a>. It's saved only in your browser.</p>
-    <div class="token-input-row">
+    <h3>Connect Apify to search real jobs</h3>
+    <p>Get your free token at <a href="https://console.apify.com/account/integrations" target="_blank" style="color:var(--green);">console.apify.com → Settings → Integrations</a>. Saved only in your browser.</p>
+    <div class="token-row">
       <input class="token-input" id="token-input" type="password" placeholder="apify_api_XXXXXXXXXXXXXXXX" />
-      <button class="save-token-btn" onclick="saveToken()">Save &amp; Start</button>
+      <button class="token-btn" onclick="saveToken()">Save & Start</button>
     </div>
   </div>
 
+  <!-- CHAT -->
   <div class="chat-card">
     <div class="messages" id="messages"></div>
     <div class="quick-wrap">
-      <button class="qbtn" onclick="qs('Search for jobs for me on LinkedIn and Indeed')">Search jobs</button>
+      <button class="qbtn" onclick="qs('Search jobs for me on LinkedIn and Indeed')">Search jobs</button>
       <button class="qbtn" onclick="qs('Write me a cover letter')">Cover letter</button>
-      <button class="qbtn" onclick="qs('What do you know about me?')">My profile</button>
+      <button class="qbtn" onclick="qs('What do you remember about me?')">What you know</button>
       <button class="qbtn" onclick="qs('Help me prep for an interview')">Interview prep</button>
+      <button class="qbtn" onclick="qs('What should I work on to improve my profile?')">Profile tips</button>
     </div>
     <div class="input-row">
-      <input class="chat-input" id="user-input" placeholder="Talk to your job agent..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();send()}" />
+      <input class="chat-input" id="user-input" placeholder="Tell me anything — I'll remember it..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();send()}" />
       <button class="send-btn" id="send-btn" onclick="send()">Send</button>
     </div>
   </div>
 
+  <!-- PROFILE PANEL -->
   <div class="profile-panel" id="profile-panel" style="display:none;">
     <div class="panel-head">
-      <span>What I know about you</span>
-      <button class="qbtn" style="font-size:11px;padding:3px 8px;" onclick="document.getElementById('profile-panel').style.display='none'">Close</button>
+      <span class="panel-head-title">Everything I know about you</span>
+      <div class="panel-actions">
+        <button class="qbtn" style="font-size:11px;padding:3px 9px;" onclick="exportProfile()">Export</button>
+        <button class="qbtn" style="font-size:11px;padding:3px 9px;" onclick="importProfile()">Import</button>
+        <button class="qbtn" style="font-size:11px;padding:3px 9px;" onclick="clearProfile()">Clear</button>
+        <button class="qbtn" style="font-size:11px;padding:3px 9px;" onclick="toggleProfile()">Close</button>
+      </div>
     </div>
     <div class="panel-body" id="panel-body"></div>
+    <div class="panel-footer">
+      <span id="last-updated">Never updated</span>
+      <span>Saved in your browser · use Export to back up</span>
+    </div>
   </div>
 
 </div>
 
 <script>
-const ANTHROPIC_KEY = '';
+// ─── STORAGE KEYS ────────────────────────────────────────────
+const KEY_PROFILE  = 'ayein_profile_v2';
+const KEY_HISTORY  = 'ayein_history_v2';
+const KEY_APIFY    = 'ayein_apify_token';
+const KEY_UPDATED  = 'ayein_last_updated';
 
-const SYSTEM = `You are JobAgent, a conversational AI job search assistant. Help the user find jobs, write cover letters, and prep for interviews through natural conversation.
-
-Be warm, concise, direct. Write in flowing sentences — never use bullet points in conversational replies. Max 3 sentences for chat replies unless writing a cover letter.
-
-PROFILE EXTRACTION: Extract these fields from anything the user says. At the END of every reply output this block (update only what you learned, null for unknowns):
-[PROFILE]{"name":null,"targetRole":null,"experience":null,"skills":null,"location":null,"salary":null,"country":null}[/PROFILE]
-Country should be a 2-letter ISO code (e.g. "in" for India, "us" for USA, "gb" for UK). Never mention this block to the user.
-
-JOB SEARCH: When user asks to search for jobs, output this on its own line:
-[SEARCH]{"keyword":"<role>","location":"<location>","country":"<2-letter-code>"}[/SEARCH]
-If you're missing location or country, ask for it first. After the command say something like "Searching LinkedIn and Indeed for you right now..."
-
-COVER LETTERS: Write full tailored cover letters when asked. Ask for job description if not provided. Output the complete letter.
-
-Always end with a question or a clear next step.`;
-
-let profile = {name:null,targetRole:null,experience:null,skills:null,location:null,salary:null,country:null};
-let history = [];
+// ─── STATE ───────────────────────────────────────────────────
+let profile = loadProfile();
+let history = loadHistory();
+let apifyToken = localStorage.getItem(KEY_APIFY) || '';
 let busy = false;
-let apifyToken = localStorage.getItem('apify_token') || '';
 
-function init() {
-  if (apifyToken) {
-    document.getElementById('token-setup').style.display = 'none';
-  }
-  addMsg('agent', "Hi! I'm JobAgent — I search real jobs on LinkedIn and Indeed, write tailored cover letters, and help you prep for interviews.\n\nWhat's your name, and what kind of role are you looking for?");
+// ─── PROFILE SCHEMA ──────────────────────────────────────────
+function defaultProfile() {
+  return {
+    name: null,
+    targetRole: null,
+    experience: null,
+    skills: null,
+    location: null,
+    country: null,
+    salary: null,
+    jobType: null,
+    industries: null,
+    education: null,
+    companies: null,
+    achievements: null,
+    notes: null
+  };
 }
 
+function loadProfile() {
+  try {
+    const raw = localStorage.getItem(KEY_PROFILE);
+    return raw ? {...defaultProfile(), ...JSON.parse(raw)} : defaultProfile();
+  } catch(e) { return defaultProfile(); }
+}
+
+function saveProfile() {
+  localStorage.setItem(KEY_PROFILE, JSON.stringify(profile));
+  localStorage.setItem(KEY_UPDATED, new Date().toLocaleString('en-IN'));
+  updateChips();
+}
+
+function loadHistory() {
+  try {
+    const raw = localStorage.getItem(KEY_HISTORY);
+    const arr = raw ? JSON.parse(raw) : [];
+    return Array.isArray(arr) ? arr.slice(-40) : [];
+  } catch(e) { return []; }
+}
+
+function saveHistory() {
+  localStorage.setItem(KEY_HISTORY, JSON.stringify(history.slice(-40)));
+}
+
+// ─── SYSTEM PROMPT ───────────────────────────────────────────
+function buildSystem() {
+  const profileJson = JSON.stringify(profile, null, 2);
+  return `You are Ayein, a personal AI job search assistant. You search real jobs, write cover letters, help with interview prep, and build a deep profile of the user over time through conversation.
+
+CURRENT PROFILE (what you already know about this user):
+${profileJson}
+
+PERSONALITY:
+- Warm, smart, direct — like a career coach who actually knows you
+- Never use bullet points in conversational replies — flowing sentences only
+- Max 3 sentences for chat replies unless writing a cover letter or doing interview prep
+- Reference what you know about the user naturally — "given your background in X..." or "since you're targeting Y..."
+- If the profile is mostly empty, ask naturally to learn more
+
+PROFILE BUILDING (most important):
+Extract and remember EVERYTHING the user tells you. Update these fields:
+- name, targetRole, experience, skills (array), location, country (2-letter ISO), salary, jobType, industries (array), education, companies (past employers), achievements, notes (anything that doesn't fit elsewhere — preferences, concerns, personality, work style)
+- The "notes" field is especially important — store soft context like "prefers startups", "hates micromanagement", "open to relocation", "needs visa sponsorship", "introverted but strong writer"
+
+At the END of every reply output this JSON block (update ONLY fields you learned new info about, null for unchanged):
+[PROFILE]{"name":null,"targetRole":null,"experience":null,"skills":null,"location":null,"country":null,"salary":null,"jobType":null,"industries":null,"education":null,"companies":null,"achievements":null,"notes":null}[/PROFILE]
+NEVER show or mention this block to the user.
+
+JOB SEARCH:
+When the user asks to search for jobs, output:
+[SEARCH]{"keyword":"<role>","location":"<location>","country":"<2-letter-code>"}[/SEARCH]
+Use profile data to fill in fields. If missing location/country ask first. After the command write something like "Searching LinkedIn and Indeed for you right now..."
+
+COVER LETTERS:
+Write full tailored cover letters when asked. Use everything in the profile to personalize. Ask for job description if not provided.
+
+MEMORY AWARENESS:
+You remember everything across sessions. When the user returns, greet them by name if known. Reference their profile naturally. Never ask for info you already have.
+
+Always end with a question or a clear next step.`;
+}
+
+// ─── INIT ────────────────────────────────────────────────────
+function init() {
+  if (apifyToken) document.getElementById('token-setup').style.display = 'none';
+  updateChips();
+
+  // Replay existing messages from history
+  if (history.length > 0) {
+    const recent = history.slice(-20);
+    recent.forEach(m => renderMsg(m.role, m.displayText || m.content));
+    // Show a returning user greeting
+    const name = profile.name ? `, ${profile.name}` : '';
+    addAgentMsg(`Welcome back${name}! I remember everything from our last chat. What would you like to do today — search for jobs, update your profile, or something else?`, false);
+  } else {
+    addAgentMsg("Hi! I'm Ayein — your personal job search companion. I'll remember everything you tell me across every session, so you never have to repeat yourself.\n\nLet's start: what's your name, and what kind of role are you looking for?", false);
+  }
+}
+
+// ─── TOKEN ───────────────────────────────────────────────────
 function saveToken() {
   const val = document.getElementById('token-input').value.trim();
   if (!val) return alert('Please enter your Apify token.');
   apifyToken = val;
-  localStorage.setItem('apify_token', val);
+  localStorage.setItem(KEY_APIFY, val);
   document.getElementById('token-setup').style.display = 'none';
-  addMsg('agent', "Token saved! I'm ready to search real jobs for you. What role and location are you targeting?");
+  addAgentMsg("Apify connected! I can now search real jobs on LinkedIn and Indeed for you. What role and location are you targeting?", true);
 }
 
-function addMsg(role, text, extra) {
+// ─── MESSAGES ────────────────────────────────────────────────
+function renderMsg(role, text) {
   const msgs = document.getElementById('messages');
   const wrap = document.createElement('div');
   wrap.className = 'msg ' + role;
   const av = document.createElement('div');
-  av.className = 'avatar ' + role;
-  av.textContent = role === 'agent' ? 'JA' : 'You';
+  av.className = 'av ' + role;
+  av.textContent = role === 'agent' ? 'AY' : 'You';
   const bubble = document.createElement('div');
   bubble.className = 'bubble';
   bubble.innerHTML = fmt(text);
-  if (extra) bubble.appendChild(extra);
   wrap.appendChild(av);
   wrap.appendChild(bubble);
   msgs.appendChild(wrap);
@@ -453,17 +582,24 @@ function addMsg(role, text, extra) {
   return bubble;
 }
 
+function addAgentMsg(text, save) {
+  renderMsg('agent', text);
+  if (save) {
+    history.push({role:'assistant', content: text, displayText: text});
+    saveHistory();
+  }
+}
+
 function fmt(t) {
-  return t
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\n/g, '<br>');
+  return t.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
 }
 
 function addTyping() {
   const msgs = document.getElementById('messages');
   const wrap = document.createElement('div');
-  wrap.className = 'msg agent'; wrap.id = 'typing';
-  wrap.innerHTML = `<div class="avatar agent">JA</div><div class="bubble" style="color:var(--hint)"><span class="spinner"></span>thinking...</div>`;
+  wrap.className = 'msg agent';
+  wrap.id = 'typing';
+  wrap.innerHTML = `<div class="av agent">AY</div><div class="bubble" style="color:var(--hint)"><span class="spinner"></span>thinking...</div>`;
   msgs.appendChild(wrap);
   msgs.scrollTop = msgs.scrollHeight;
 }
@@ -475,6 +611,7 @@ function removeTyping() {
 
 function qs(t) { document.getElementById('user-input').value = t; send(); }
 
+// ─── SEND ────────────────────────────────────────────────────
 async function send() {
   if (busy) return;
   const input = document.getElementById('user-input');
@@ -483,25 +620,62 @@ async function send() {
   input.value = '';
   busy = true;
   document.getElementById('send-btn').disabled = true;
-  addMsg('user', text);
-  history.push({role: 'user', content: text});
+
+  renderMsg('user', text);
+  history.push({role:'user', content: text, displayText: text});
+  saveHistory();
   addTyping();
+
+  // Build messages for API — use last 20 turns for context
+  const apiMessages = history.slice(-20).map(m => ({role: m.role, content: m.content}));
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01'},
-      body: JSON.stringify({model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: SYSTEM, messages: history})
+      headers: {
+        'Content-Type': 'application/json',
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1200,
+        system: buildSystem(),
+        messages: apiMessages
+      })
     });
-    const data = await res.json();
-    let reply = data.content?.map(b => b.text || '').join('') || 'Something went wrong.';
 
+    const data = await res.json();
+    let reply = data.content?.map(b => b.text || '').join('') || 'Something went wrong — please try again.';
+
+    // Extract and apply profile updates
     const pm = reply.match(/\[PROFILE\]([\s\S]*?)\[\/PROFILE\]/);
     if (pm) {
-      try { const u = JSON.parse(pm[1]); Object.keys(u).forEach(k => { if (u[k] !== null) profile[k] = u[k]; }); updateChips(); } catch(e) {}
+      try {
+        const updates = JSON.parse(pm[1]);
+        let changed = false;
+        Object.keys(updates).forEach(k => {
+          if (updates[k] !== null && updates[k] !== undefined) {
+            // Merge arrays, overwrite scalars
+            if (Array.isArray(updates[k]) && Array.isArray(profile[k])) {
+              const merged = [...new Set([...profile[k], ...updates[k]])];
+              profile[k] = merged;
+            } else if (Array.isArray(updates[k])) {
+              profile[k] = updates[k];
+            } else if (k === 'notes' && profile[k]) {
+              // Append to notes
+              profile[k] = profile[k] + '\n' + updates[k];
+            } else {
+              profile[k] = updates[k];
+            }
+            changed = true;
+          }
+        });
+        if (changed) saveProfile();
+      } catch(e) {}
       reply = reply.replace(/\[PROFILE\][\s\S]*?\[\/PROFILE\]/, '').trim();
     }
 
+    // Extract search command
     const sm = reply.match(/\[SEARCH\]([\s\S]*?)\[\/SEARCH\]/);
     let searchP = null;
     if (sm) {
@@ -510,14 +684,16 @@ async function send() {
     }
 
     removeTyping();
-    addMsg('agent', reply);
-    history.push({role: 'assistant', content: reply});
+    const displayReply = reply;
+    renderMsg('agent', displayReply);
+    history.push({role:'assistant', content: reply, displayText: displayReply});
+    saveHistory();
 
     if (searchP) await doSearch(searchP);
 
   } catch(e) {
     removeTyping();
-    addMsg('agent', 'Something went wrong — please try again.');
+    renderMsg('agent', 'Something went wrong — please check your connection and try again.');
   }
 
   busy = false;
@@ -525,38 +701,40 @@ async function send() {
   input.focus();
 }
 
+// ─── JOB SEARCH ──────────────────────────────────────────────
 async function doSearch(p) {
   const msgs = document.getElementById('messages');
   const wrap = document.createElement('div');
   wrap.className = 'msg agent';
   const av = document.createElement('div');
-  av.className = 'avatar agent'; av.textContent = 'JA';
+  av.className = 'av agent'; av.textContent = 'AY';
   const bubble = document.createElement('div');
   bubble.className = 'bubble';
-  bubble.style.maxWidth = '92%';
+  bubble.style.maxWidth = '93%';
   bubble.innerHTML = `<span class="spinner"></span>Searching LinkedIn &amp; Indeed for <strong>${p.keyword}</strong> in <strong>${p.location || 'your area'}</strong>...`;
   wrap.appendChild(av); wrap.appendChild(bubble);
   msgs.appendChild(wrap);
   msgs.scrollTop = msgs.scrollHeight;
 
   if (!apifyToken) {
-    bubble.innerHTML = 'Please enter your Apify token first — scroll up to the setup panel.';
+    bubble.innerHTML = 'No Apify token found — please enter it in the setup panel above to enable live job search.';
     return;
   }
 
   const liUrl = `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(p.keyword)}&location=${encodeURIComponent(p.location||'')}&position=1&pageNum=0`;
 
+  bubble.innerHTML = `<span class="spinner"></span>Running LinkedIn scraper...`;
   const [li, ind] = await Promise.allSettled([
     runApify('curious_coder~linkedin-jobs-scraper', {urls:[liUrl], count:8, scrapeCompany:false}),
-    runApify('valig~indeed-jobs-scraper', {title:p.keyword, location:p.location||'', country:p.country||'us', limit:8})
+    runApify('valig~indeed-jobs-scraper', {title:p.keyword, location:p.location||'', country:p.country||'in', limit:8})
   ]);
 
   const all = [];
-  if (li.status==='fulfilled') all.push(...li.value.map(j=>({...j,src:'li'})));
-  if (ind.status==='fulfilled') all.push(...ind.value.map(j=>({...j,src:'ind'})));
+  if (li.status==='fulfilled' && Array.isArray(li.value)) all.push(...li.value.map(j=>({...j,src:'li'})));
+  if (ind.status==='fulfilled' && Array.isArray(ind.value)) all.push(...ind.value.map(j=>({...j,src:'ind'})));
 
   if (!all.length) {
-    bubble.innerHTML = 'No results came back — check your Apify token and make sure you have credits. You can also try a different role or location.';
+    bubble.innerHTML = 'No results came back. Check your Apify token has credits, or try a different role / location.';
     return;
   }
 
@@ -568,24 +746,24 @@ async function doSearch(p) {
   all.slice(0,8).forEach(job => {
     const c = document.createElement('div');
     c.className = 'jcard';
-    const title = job.title || 'Role';
+    const title   = job.title || 'Role';
     const company = job.companyName || job.company || '';
-    const loc = job.location || job.formattedLocation || '';
-    const desc = job.description || job.snippet || '';
-    const url = job.applyUrl || job.jobUrl || job.url || '#';
+    const loc     = job.location || job.formattedLocation || '';
+    const desc    = job.description || job.snippet || '';
+    const url     = job.applyUrl || job.jobUrl || job.url || '#';
     const srcLabel = job.src === 'li' ? 'LinkedIn' : 'Indeed';
     const srcClass = job.src === 'li' ? 'li' : 'ind';
-    const type = job.workType || job.employmentType || '';
-    const posted = job.postedAt || job.date || '';
+    const type     = job.workType || job.employmentType || '';
+    const posted   = job.postedAt || job.date || '';
     c.innerHTML = `
       <div class="jcard-title">${title}</div>
-      <div class="jcard-co">${company}${loc ? ' · ' + loc : ''}</div>
+      <div class="jcard-co">${company}${loc?' · '+loc:''}</div>
       <div class="jtags">
         <span class="jtag ${srcClass}">${srcLabel}</span>
-        ${type ? `<span class="jtag">${type}</span>` : ''}
-        ${posted ? `<span class="jtag">${posted}</span>` : ''}
+        ${type?`<span class="jtag">${type}</span>`:''}
+        ${posted?`<span class="jtag">${posted}</span>`:''}
       </div>
-      ${desc ? `<div class="jcard-desc">${desc.substring(0,180)}...</div>` : ''}
+      ${desc?`<div class="jcard-desc">${desc.substring(0,190)}...</div>`:''}
       <div class="jcard-foot">
         <a class="jcard-link" href="${url}" target="_blank">View &amp; apply →</a>
         <button class="qbtn" style="font-size:11px;padding:3px 9px;" onclick="qs('Write a cover letter for the ${title.replace(/'/g,'')} role at ${company.replace(/'/g,'')}')">Cover letter</button>
@@ -594,10 +772,9 @@ async function doSearch(p) {
   });
 
   bubble.appendChild(cards);
-
   const note = document.createElement('div');
   note.style.cssText = 'font-size:12px;color:var(--muted);margin-top:8px;';
-  note.textContent = 'Tap "Cover letter" on any job to write one instantly. Want different filters?';
+  note.textContent = 'Tap "Cover letter" on any job to write one instantly. Want to refine the search?';
   bubble.appendChild(note);
   msgs.scrollTop = msgs.scrollHeight;
 }
@@ -609,14 +786,14 @@ async function runApify(actor, input) {
   const run = await r.json();
   const runId = run.data?.id;
   if (!runId) return [];
-  await poll(runId);
+  await pollRun(runId);
   const dsId = run.data?.defaultDatasetId;
   if (!dsId) return [];
   const d = await fetch(`https://api.apify.com/v2/datasets/${dsId}/items?token=${apifyToken}&limit=20`);
   return await d.json();
 }
 
-async function poll(runId, max=90000) {
+async function pollRun(runId, max=90000) {
   const start = Date.now();
   while (Date.now()-start < max) {
     await new Promise(r => setTimeout(r, 3500));
@@ -627,21 +804,28 @@ async function poll(runId, max=90000) {
   }
 }
 
+// ─── CHIPS ───────────────────────────────────────────────────
 function updateChips() {
-  const set = (id, val, label) => {
+  const chip = (id, val, label) => {
     const el = document.getElementById(id);
     if (!el) return;
-    el.textContent = val ? `${label}: ${val}` : `${label}: —`;
-    el.classList.toggle('filled', !!val);
+    el.textContent = val ? `${label}: ${typeof val === 'object' ? (Array.isArray(val) ? val.slice(0,2).join(', ') : JSON.stringify(val)) : val}` : label;
+    el.classList.toggle('set', !!val);
   };
-  set('chip-name', profile.name, 'Name');
-  set('chip-role', profile.targetRole, 'Role');
-  set('chip-exp', profile.experience, 'Exp');
-  set('chip-loc', profile.location, 'Location');
-  const sk = Array.isArray(profile.skills) ? profile.skills.slice(0,2).join(', ') : profile.skills;
-  set('chip-skills', sk, 'Skills');
+  chip('chip-name',   profile.name,       'Name');
+  chip('chip-role',   profile.targetRole, 'Target role');
+  chip('chip-exp',    profile.experience, 'Experience');
+  chip('chip-loc',    profile.location,   'Location');
+  const skills = Array.isArray(profile.skills) ? profile.skills.slice(0,2).join(', ') : profile.skills;
+  chip('chip-skills', skills, 'Skills');
+  const notesEl = document.getElementById('chip-notes');
+  if (notesEl) {
+    notesEl.style.display = profile.notes ? 'inline-block' : 'none';
+    notesEl.classList.toggle('set', !!profile.notes);
+  }
 }
 
+// ─── PROFILE PANEL ───────────────────────────────────────────
 function toggleProfile() {
   const p = document.getElementById('profile-panel');
   const show = p.style.display === 'none';
@@ -651,22 +835,106 @@ function toggleProfile() {
 
 function renderPanel() {
   const body = document.getElementById('panel-body');
-  const skillsArr = Array.isArray(profile.skills) ? profile.skills : profile.skills ? profile.skills.split(',').map(s=>s.trim()) : [];
-  const rows = [
-    ['Name', profile.name],
-    ['Target role', profile.targetRole],
-    ['Experience', profile.experience],
-    ['Location', profile.location],
-    ['Country', profile.country],
-    ['Salary', profile.salary],
-  ];
-  body.innerHTML = rows.map(([k,v]) =>
-    `<div class="field-row"><span class="fkey">${k}</span><span class="${v?'fval':''}" style="${!v?'color:var(--hint);font-size:12px;':''}">${v||'not set'}</span></div>`
-  ).join('') + (skillsArr.length
-    ? `<div class="field-row"><span class="fkey">Skills</span><div class="tag-list">${skillsArr.map(s=>`<span class="stag">${s}</span>`).join('')}</div></div>`
-    : `<div class="field-row"><span class="fkey">Skills</span><span style="color:var(--hint);font-size:12px;">not set</span></div>`);
+  const skillsArr   = Array.isArray(profile.skills) ? profile.skills : profile.skills ? profile.skills.split(',').map(s=>s.trim()) : [];
+  const indArr      = Array.isArray(profile.industries) ? profile.industries : profile.industries ? profile.industries.split(',').map(s=>s.trim()) : [];
+  const companiesArr = Array.isArray(profile.companies) ? profile.companies : profile.companies ? profile.companies.split(',').map(s=>s.trim()) : [];
+
+  const scalar = (key, label) => {
+    const v = profile[key];
+    return `<div class="field-group">
+      <span class="fkey">${label}</span>
+      <span class="fval${v?'':' empty'}">${v || 'Not set yet'}</span>
+    </div>`;
+  };
+
+  const tags = (arr, label) => {
+    return `<div class="field-group">
+      <span class="fkey">${label}</span>
+      ${arr.length
+        ? `<div class="tag-list">${arr.map(s=>`<span class="stag">${s}</span>`).join('')}</div>`
+        : `<span class="fval empty">Not set yet</span>`}
+    </div>`;
+  };
+
+  body.innerHTML = `
+    <div class="field-grid">
+      ${scalar('name','Full name')}
+      ${scalar('targetRole','Target role')}
+      ${scalar('experience','Experience')}
+      ${scalar('location','Location')}
+      ${scalar('country','Country code')}
+      ${scalar('salary','Salary expectation')}
+      ${scalar('jobType','Job type preference')}
+      ${scalar('education','Education')}
+    </div>
+    <div class="divider"></div>
+    ${tags(skillsArr,'Skills')}
+    ${tags(indArr,'Preferred industries')}
+    ${tags(companiesArr,'Past companies')}
+    ${scalar('achievements','Key achievements')}
+    <div class="divider"></div>
+    <div class="field-group">
+      <span class="fkey">Personal notes & context</span>
+      ${profile.notes
+        ? `<div class="notes-area">${profile.notes}</div>`
+        : `<span class="fval empty">Nothing yet — things like "prefers startups", "open to relocation", "needs visa sponsorship" will appear here as you chat</span>`}
+    </div>`;
+
+  const lu = localStorage.getItem(KEY_UPDATED);
+  document.getElementById('last-updated').textContent = lu ? `Last updated: ${lu}` : 'Never updated';
 }
 
+// ─── EXPORT / IMPORT / CLEAR ─────────────────────────────────
+function exportProfile() {
+  const data = {
+    profile,
+    exportedAt: new Date().toISOString(),
+    version: 2
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'ayein-profile.json';
+  a.click();
+}
+
+function importProfile() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const data = JSON.parse(ev.target.result);
+        const imported = data.profile || data;
+        profile = {...defaultProfile(), ...imported};
+        saveProfile();
+        renderPanel();
+        alert('Profile imported successfully!');
+      } catch(err) {
+        alert('Could not read the file — make sure it\'s a valid Ayein export.');
+      }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+function clearProfile() {
+  if (!confirm('Clear all saved profile data? This cannot be undone.')) return;
+  profile = defaultProfile();
+  saveProfile();
+  localStorage.removeItem(KEY_HISTORY);
+  history = [];
+  renderPanel();
+  updateChips();
+  alert('Profile cleared. Refresh the page to start fresh.');
+}
+
+// ─── START ───────────────────────────────────────────────────
 init();
 </script>
 </body>
