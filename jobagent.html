@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>JobAgent — AI-powered job search</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #ffffff;
+    --bg2: #f7f7f5;
+    --bg3: #f0efe9;
+    --text: #1a1a18;
+    --muted: #6b6b67;
+    --hint: #a0a09c;
+    --border: rgba(0,0,0,0.1);
+    --border2: rgba(0,0,0,0.18);
+    --radius: 12px;
+    --accent: #1D9E75;
+    --accent-dark: #0F6E56;
+    --accent-light: #E1F5EE;
+    --accent-text: #085041;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1a;
+      --bg2: #242422;
+      --bg3: #2c2c2a;
+      --text: #f0efe9;
+      --muted: #a0a09c;
+      --hint: #6b6b67;
+      --border: rgba(255,255,255,0.1);
+      --border2: rgba(255,255,255,0.18);
+      --accent-light: #0a2e22;
+      --accent-text: #9FE1CB;
+    }
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg3);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 24px 16px 40px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 680px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .logo-row { display: flex; align-items: center; gap: 10px; }
+
+  .logo {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .logo svg { width: 20px; height: 20px; }
+  .app-title { font-size: 16px; font-weight: 600; color: var(--text); }
+  .app-sub { font-size: 12px; color: var(--muted); margin-top: 1px; }
+
+  .badge {
+    font-size: 10px;
+    padding: 3px 9px;
+    border-radius: 8px;
+    border: 0.5px solid;
+    font-weight: 500;
+  }
+
+  .badge-apify { background: #EEEDFE; border-color: #AFA9EC; color: #26215C; }
+  .badge-ai { background: var(--accent-light); border-color: #5DCAA5; color: var(--accent-text); }
+
+  .profile-bar {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    padding: 10px 16px;
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .chip {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    border: 0.5px solid var(--border2);
+    color: var(--muted);
+    background: var(--bg2);
+    white-space: nowrap;
+  }
+
+  .chip.filled {
+    background: var(--accent-light);
+    border-color: #5DCAA5;
+    color: var(--accent-text);
+    font-weight: 500;
+  }
+
+  .chat-card {
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .messages {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 360px;
+    max-height: 500px;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+  }
+
+  .msg { display: flex; gap: 8px; align-items: flex-start; }
+  .msg.user { flex-direction: row-reverse; }
+
+  .avatar {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 600;
+  }
+
+  .avatar.agent { background: var(--accent-light); color: var(--accent-text); }
+  .avatar.user { background: var(--bg3); color: var(--muted); }
+
+  .bubble {
+    max-width: 82%;
+    font-size: 13.5px;
+    line-height: 1.65;
+    padding: 10px 14px;
+    border-radius: 16px;
+    border: 0.5px solid var(--border);
+    background: var(--bg2);
+    color: var(--text);
+  }
+
+  .msg.user .bubble {
+    background: var(--accent-light);
+    border-color: #9FE1CB;
+    color: var(--accent-text);
+    border-radius: 16px 4px 16px 16px;
+  }
+
+  .msg.agent .bubble { border-radius: 4px 16px 16px 16px; }
+
+  .job-cards { display: flex; flex-direction: column; gap: 7px; margin-top: 8px; }
+
+  .jcard {
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 13px;
+  }
+
+  .jcard-title { font-size: 13px; font-weight: 600; color: var(--text); }
+  .jcard-co { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  .jtags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px; }
+
+  .jtag {
+    font-size: 10px; padding: 2px 7px;
+    border-radius: 8px; border: 0.5px solid var(--border2);
+    color: var(--muted); background: var(--bg2);
+  }
+
+  .jtag.li { background: #E6F1FB; border-color: #85B7EB; color: #0C447C; }
+  .jtag.ind { background: #FAECE7; border-color: #F0997B; color: #4A1B0C; }
+
+  .jcard-desc {
+    font-size: 11.5px; color: var(--muted);
+    margin-top: 5px; line-height: 1.5;
+    display: -webkit-box; -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical; overflow: hidden;
+  }
+
+  .jcard-foot {
+    display: flex; align-items: center;
+    justify-content: space-between; margin-top: 8px;
+  }
+
+  .jcard-link {
+    font-size: 12px; color: var(--accent);
+    text-decoration: none; font-weight: 500;
+  }
+
+  .jcard-link:hover { text-decoration: underline; }
+
+  .quick-wrap {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    padding: 10px 16px;
+    border-top: 0.5px solid var(--border);
+    background: var(--bg2);
+  }
+
+  .qbtn {
+    font-size: 12px; padding: 6px 13px;
+    border-radius: 20px;
+    border: 0.5px solid var(--border2);
+    background: var(--bg);
+    color: var(--muted);
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+
+  .qbtn:hover { background: var(--bg3); color: var(--text); }
+
+  .input-row {
+    display: flex; gap: 8px;
+    padding: 12px 16px;
+    border-top: 0.5px solid var(--border);
+  }
+
+  .chat-input {
+    flex: 1;
+    font-family: inherit;
+    font-size: 13.5px;
+    border: 0.5px solid var(--border2);
+    border-radius: 10px;
+    padding: 9px 13px;
+    background: var(--bg);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .chat-input:focus { border-color: var(--accent); }
+  .chat-input::placeholder { color: var(--hint); }
+
+  .send-btn {
+    font-family: inherit;
+    font-size: 13px; font-weight: 600;
+    padding: 9px 18px;
+    border-radius: 10px;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+
+  .send-btn:hover { background: var(--accent-dark); }
+  .send-btn:disabled { background: var(--bg3); color: var(--hint); cursor: not-allowed; }
+
+  .profile-panel {
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .panel-head {
+    padding: 10px 16px;
+    background: var(--bg2);
+    border-bottom: 0.5px solid var(--border);
+    font-size: 13px; font-weight: 500;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .panel-body { padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; }
+
+  .field-row { display: flex; gap: 10px; align-items: baseline; }
+  .fkey { font-size: 12px; color: var(--muted); min-width: 110px; flex-shrink: 0; }
+  .fval { font-size: 13px; font-weight: 500; color: var(--text); }
+
+  .tag-list { display: flex; gap: 4px; flex-wrap: wrap; }
+  .stag { font-size: 11px; padding: 2px 8px; border-radius: 10px; background: var(--accent-light); border: 0.5px solid #9FE1CB; color: var(--accent-text); }
+
+  .spinner {
+    display: inline-block; width: 13px; height: 13px;
+    border: 2px solid rgba(29,158,117,0.25);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle; margin-right: 5px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .token-setup {
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+  }
+
+  .token-setup h3 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+  .token-setup p { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 10px; }
+  .token-input-row { display: flex; gap: 8px; }
+  .token-input {
+    flex: 1; font-family: inherit; font-size: 13px;
+    border: 0.5px solid var(--border2); border-radius: 8px;
+    padding: 8px 12px; background: var(--bg2); color: var(--text); outline: none;
+  }
+  .token-input:focus { border-color: var(--accent); }
+  .save-token-btn {
+    font-family: inherit; font-size: 13px; font-weight: 600;
+    padding: 8px 16px; border-radius: 8px;
+    border: none; background: var(--accent); color: #fff; cursor: pointer;
+  }
+  .save-token-btn:hover { background: var(--accent-dark); }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="logo-row">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L2 7l10 5 10-5-10-5z" fill="white"/>
+          <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="app-title">JobAgent</div>
+        <div class="app-sub">Real jobs from LinkedIn &amp; Indeed via Apify</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:6px;align-items:center;">
+      <span class="badge badge-apify">Apify</span>
+      <span class="badge badge-ai">Claude AI</span>
+      <button class="qbtn" onclick="toggleProfile()" style="margin-left:4px;">Profile</button>
+    </div>
+  </div>
+
+  <div class="profile-bar" id="profile-bar">
+    <span class="chip" id="chip-name">Name: —</span>
+    <span class="chip" id="chip-role">Role: —</span>
+    <span class="chip" id="chip-exp">Exp: —</span>
+    <span class="chip" id="chip-loc">Location: —</span>
+    <span class="chip" id="chip-skills">Skills: —</span>
+  </div>
+
+  <div class="token-setup" id="token-setup">
+    <h3>Enter your Apify API token to enable live job search</h3>
+    <p>Get it from <a href="https://console.apify.com/account/integrations" target="_blank" style="color:var(--accent);">console.apify.com → Settings → Integrations</a>. It's saved only in your browser.</p>
+    <div class="token-input-row">
+      <input class="token-input" id="token-input" type="password" placeholder="apify_api_XXXXXXXXXXXXXXXX" />
+      <button class="save-token-btn" onclick="saveToken()">Save &amp; Start</button>
+    </div>
+  </div>
+
+  <div class="chat-card">
+    <div class="messages" id="messages"></div>
+    <div class="quick-wrap">
+      <button class="qbtn" onclick="qs('Search for jobs for me on LinkedIn and Indeed')">Search jobs</button>
+      <button class="qbtn" onclick="qs('Write me a cover letter')">Cover letter</button>
+      <button class="qbtn" onclick="qs('What do you know about me?')">My profile</button>
+      <button class="qbtn" onclick="qs('Help me prep for an interview')">Interview prep</button>
+    </div>
+    <div class="input-row">
+      <input class="chat-input" id="user-input" placeholder="Talk to your job agent..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();send()}" />
+      <button class="send-btn" id="send-btn" onclick="send()">Send</button>
+    </div>
+  </div>
+
+  <div class="profile-panel" id="profile-panel" style="display:none;">
+    <div class="panel-head">
+      <span>What I know about you</span>
+      <button class="qbtn" style="font-size:11px;padding:3px 8px;" onclick="document.getElementById('profile-panel').style.display='none'">Close</button>
+    </div>
+    <div class="panel-body" id="panel-body"></div>
+  </div>
+
+</div>
+
+<script>
+const ANTHROPIC_KEY = '';
+
+const SYSTEM = `You are JobAgent, a conversational AI job search assistant. Help the user find jobs, write cover letters, and prep for interviews through natural conversation.
+
+Be warm, concise, direct. Write in flowing sentences — never use bullet points in conversational replies. Max 3 sentences for chat replies unless writing a cover letter.
+
+PROFILE EXTRACTION: Extract these fields from anything the user says. At the END of every reply output this block (update only what you learned, null for unknowns):
+[PROFILE]{"name":null,"targetRole":null,"experience":null,"skills":null,"location":null,"salary":null,"country":null}[/PROFILE]
+Country should be a 2-letter ISO code (e.g. "in" for India, "us" for USA, "gb" for UK). Never mention this block to the user.
+
+JOB SEARCH: When user asks to search for jobs, output this on its own line:
+[SEARCH]{"keyword":"<role>","location":"<location>","country":"<2-letter-code>"}[/SEARCH]
+If you're missing location or country, ask for it first. After the command say something like "Searching LinkedIn and Indeed for you right now..."
+
+COVER LETTERS: Write full tailored cover letters when asked. Ask for job description if not provided. Output the complete letter.
+
+Always end with a question or a clear next step.`;
+
+let profile = {name:null,targetRole:null,experience:null,skills:null,location:null,salary:null,country:null};
+let history = [];
+let busy = false;
+let apifyToken = localStorage.getItem('apify_token') || '';
+
+function init() {
+  if (apifyToken) {
+    document.getElementById('token-setup').style.display = 'none';
+  }
+  addMsg('agent', "Hi! I'm JobAgent — I search real jobs on LinkedIn and Indeed, write tailored cover letters, and help you prep for interviews.\n\nWhat's your name, and what kind of role are you looking for?");
+}
+
+function saveToken() {
+  const val = document.getElementById('token-input').value.trim();
+  if (!val) return alert('Please enter your Apify token.');
+  apifyToken = val;
+  localStorage.setItem('apify_token', val);
+  document.getElementById('token-setup').style.display = 'none';
+  addMsg('agent', "Token saved! I'm ready to search real jobs for you. What role and location are you targeting?");
+}
+
+function addMsg(role, text, extra) {
+  const msgs = document.getElementById('messages');
+  const wrap = document.createElement('div');
+  wrap.className = 'msg ' + role;
+  const av = document.createElement('div');
+  av.className = 'avatar ' + role;
+  av.textContent = role === 'agent' ? 'JA' : 'You';
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  bubble.innerHTML = fmt(text);
+  if (extra) bubble.appendChild(extra);
+  wrap.appendChild(av);
+  wrap.appendChild(bubble);
+  msgs.appendChild(wrap);
+  msgs.scrollTop = msgs.scrollHeight;
+  return bubble;
+}
+
+function fmt(t) {
+  return t
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>');
+}
+
+function addTyping() {
+  const msgs = document.getElementById('messages');
+  const wrap = document.createElement('div');
+  wrap.className = 'msg agent'; wrap.id = 'typing';
+  wrap.innerHTML = `<div class="avatar agent">JA</div><div class="bubble" style="color:var(--hint)"><span class="spinner"></span>thinking...</div>`;
+  msgs.appendChild(wrap);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeTyping() {
+  const el = document.getElementById('typing');
+  if (el) el.remove();
+}
+
+function qs(t) { document.getElementById('user-input').value = t; send(); }
+
+async function send() {
+  if (busy) return;
+  const input = document.getElementById('user-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  busy = true;
+  document.getElementById('send-btn').disabled = true;
+  addMsg('user', text);
+  history.push({role: 'user', content: text});
+  addTyping();
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01'},
+      body: JSON.stringify({model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: SYSTEM, messages: history})
+    });
+    const data = await res.json();
+    let reply = data.content?.map(b => b.text || '').join('') || 'Something went wrong.';
+
+    const pm = reply.match(/\[PROFILE\]([\s\S]*?)\[\/PROFILE\]/);
+    if (pm) {
+      try { const u = JSON.parse(pm[1]); Object.keys(u).forEach(k => { if (u[k] !== null) profile[k] = u[k]; }); updateChips(); } catch(e) {}
+      reply = reply.replace(/\[PROFILE\][\s\S]*?\[\/PROFILE\]/, '').trim();
+    }
+
+    const sm = reply.match(/\[SEARCH\]([\s\S]*?)\[\/SEARCH\]/);
+    let searchP = null;
+    if (sm) {
+      try { searchP = JSON.parse(sm[1]); } catch(e) {}
+      reply = reply.replace(/\[SEARCH\][\s\S]*?\[\/SEARCH\]/, '').trim();
+    }
+
+    removeTyping();
+    addMsg('agent', reply);
+    history.push({role: 'assistant', content: reply});
+
+    if (searchP) await doSearch(searchP);
+
+  } catch(e) {
+    removeTyping();
+    addMsg('agent', 'Something went wrong — please try again.');
+  }
+
+  busy = false;
+  document.getElementById('send-btn').disabled = false;
+  input.focus();
+}
+
+async function doSearch(p) {
+  const msgs = document.getElementById('messages');
+  const wrap = document.createElement('div');
+  wrap.className = 'msg agent';
+  const av = document.createElement('div');
+  av.className = 'avatar agent'; av.textContent = 'JA';
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  bubble.style.maxWidth = '92%';
+  bubble.innerHTML = `<span class="spinner"></span>Searching LinkedIn &amp; Indeed for <strong>${p.keyword}</strong> in <strong>${p.location || 'your area'}</strong>...`;
+  wrap.appendChild(av); wrap.appendChild(bubble);
+  msgs.appendChild(wrap);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  if (!apifyToken) {
+    bubble.innerHTML = 'Please enter your Apify token first — scroll up to the setup panel.';
+    return;
+  }
+
+  const liUrl = `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(p.keyword)}&location=${encodeURIComponent(p.location||'')}&position=1&pageNum=0`;
+
+  const [li, ind] = await Promise.allSettled([
+    runApify('curious_coder~linkedin-jobs-scraper', {urls:[liUrl], count:8, scrapeCompany:false}),
+    runApify('valig~indeed-jobs-scraper', {title:p.keyword, location:p.location||'', country:p.country||'us', limit:8})
+  ]);
+
+  const all = [];
+  if (li.status==='fulfilled') all.push(...li.value.map(j=>({...j,src:'li'})));
+  if (ind.status==='fulfilled') all.push(...ind.value.map(j=>({...j,src:'ind'})));
+
+  if (!all.length) {
+    bubble.innerHTML = 'No results came back — check your Apify token and make sure you have credits. You can also try a different role or location.';
+    return;
+  }
+
+  bubble.innerHTML = `Found <strong>${all.length}</strong> live jobs — here are the top matches:`;
+
+  const cards = document.createElement('div');
+  cards.className = 'job-cards';
+
+  all.slice(0,8).forEach(job => {
+    const c = document.createElement('div');
+    c.className = 'jcard';
+    const title = job.title || 'Role';
+    const company = job.companyName || job.company || '';
+    const loc = job.location || job.formattedLocation || '';
+    const desc = job.description || job.snippet || '';
+    const url = job.applyUrl || job.jobUrl || job.url || '#';
+    const srcLabel = job.src === 'li' ? 'LinkedIn' : 'Indeed';
+    const srcClass = job.src === 'li' ? 'li' : 'ind';
+    const type = job.workType || job.employmentType || '';
+    const posted = job.postedAt || job.date || '';
+    c.innerHTML = `
+      <div class="jcard-title">${title}</div>
+      <div class="jcard-co">${company}${loc ? ' · ' + loc : ''}</div>
+      <div class="jtags">
+        <span class="jtag ${srcClass}">${srcLabel}</span>
+        ${type ? `<span class="jtag">${type}</span>` : ''}
+        ${posted ? `<span class="jtag">${posted}</span>` : ''}
+      </div>
+      ${desc ? `<div class="jcard-desc">${desc.substring(0,180)}...</div>` : ''}
+      <div class="jcard-foot">
+        <a class="jcard-link" href="${url}" target="_blank">View &amp; apply →</a>
+        <button class="qbtn" style="font-size:11px;padding:3px 9px;" onclick="qs('Write a cover letter for the ${title.replace(/'/g,'')} role at ${company.replace(/'/g,'')}')">Cover letter</button>
+      </div>`;
+    cards.appendChild(c);
+  });
+
+  bubble.appendChild(cards);
+
+  const note = document.createElement('div');
+  note.style.cssText = 'font-size:12px;color:var(--muted);margin-top:8px;';
+  note.textContent = 'Tap "Cover letter" on any job to write one instantly. Want different filters?';
+  bubble.appendChild(note);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+async function runApify(actor, input) {
+  const r = await fetch(`https://api.apify.com/v2/acts/${actor}/runs?token=${apifyToken}`, {
+    method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(input)
+  });
+  const run = await r.json();
+  const runId = run.data?.id;
+  if (!runId) return [];
+  await poll(runId);
+  const dsId = run.data?.defaultDatasetId;
+  if (!dsId) return [];
+  const d = await fetch(`https://api.apify.com/v2/datasets/${dsId}/items?token=${apifyToken}&limit=20`);
+  return await d.json();
+}
+
+async function poll(runId, max=90000) {
+  const start = Date.now();
+  while (Date.now()-start < max) {
+    await new Promise(r => setTimeout(r, 3500));
+    const r = await fetch(`https://api.apify.com/v2/actor-runs/${runId}?token=${apifyToken}`);
+    const d = await r.json();
+    const s = d.data?.status;
+    if (s==='SUCCEEDED'||s==='FAILED'||s==='ABORTED') break;
+  }
+}
+
+function updateChips() {
+  const set = (id, val, label) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = val ? `${label}: ${val}` : `${label}: —`;
+    el.classList.toggle('filled', !!val);
+  };
+  set('chip-name', profile.name, 'Name');
+  set('chip-role', profile.targetRole, 'Role');
+  set('chip-exp', profile.experience, 'Exp');
+  set('chip-loc', profile.location, 'Location');
+  const sk = Array.isArray(profile.skills) ? profile.skills.slice(0,2).join(', ') : profile.skills;
+  set('chip-skills', sk, 'Skills');
+}
+
+function toggleProfile() {
+  const p = document.getElementById('profile-panel');
+  const show = p.style.display === 'none';
+  p.style.display = show ? 'block' : 'none';
+  if (show) renderPanel();
+}
+
+function renderPanel() {
+  const body = document.getElementById('panel-body');
+  const skillsArr = Array.isArray(profile.skills) ? profile.skills : profile.skills ? profile.skills.split(',').map(s=>s.trim()) : [];
+  const rows = [
+    ['Name', profile.name],
+    ['Target role', profile.targetRole],
+    ['Experience', profile.experience],
+    ['Location', profile.location],
+    ['Country', profile.country],
+    ['Salary', profile.salary],
+  ];
+  body.innerHTML = rows.map(([k,v]) =>
+    `<div class="field-row"><span class="fkey">${k}</span><span class="${v?'fval':''}" style="${!v?'color:var(--hint);font-size:12px;':''}">${v||'not set'}</span></div>`
+  ).join('') + (skillsArr.length
+    ? `<div class="field-row"><span class="fkey">Skills</span><div class="tag-list">${skillsArr.map(s=>`<span class="stag">${s}</span>`).join('')}</div></div>`
+    : `<div class="field-row"><span class="fkey">Skills</span><span style="color:var(--hint);font-size:12px;">not set</span></div>`);
+}
+
+init();
+</script>
+</body>
+</html>
