@@ -8,357 +8,97 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
-  --bg:       #F5F3EE;
-  --surface:  #FFFFFF;
-  --surface2: #F0EDE6;
-  --text:     #1C1917;
-  --muted:    #78716C;
-  --hint:     #A8A29E;
-  --border:   rgba(0,0,0,0.08);
-  --border2:  rgba(0,0,0,0.14);
-  --green:    #1D9E75;
-  --green-d:  #0F6E56;
-  --green-l:  #E1F5EE;
-  --green-t:  #085041;
-  --radius:   14px;
+  --bg: #F5F3EE; --surface: #FFFFFF; --surface2: #F0EDE6;
+  --text: #1C1917; --muted: #78716C; --hint: #A8A29E;
+  --border: rgba(0,0,0,0.08); --border2: rgba(0,0,0,0.14);
+  --green: #1D9E75; --green-d: #0F6E56; --green-l: #E1F5EE; --green-t: #085041;
+  --radius: 14px;
 }
-
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg:      #141412;
-    --surface: #1E1D1B;
-    --surface2:#252420;
-    --text:    #F5F0E8;
-    --muted:   #A8A29E;
-    --hint:    #6B6762;
-    --border:  rgba(255,255,255,0.07);
-    --border2: rgba(255,255,255,0.13);
-    --green-l: #0a2e22;
-    --green-t: #9FE1CB;
+    --bg: #141412; --surface: #1E1D1B; --surface2:#252420;
+    --text: #F5F0E8; --muted: #A8A29E; --hint: #6B6762;
+    --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.13);
+    --green-l: #0a2e22; --green-t: #9FE1CB;
   }
 }
-
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 20px 16px 48px;
-}
-
-.app {
-  width: 100%;
-  max-width: 700px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-/* HEADER */
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 18px;
-  background: var(--surface);
-  border: 0.5px solid var(--border);
-  border-radius: var(--radius);
-}
-
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 20px 16px 48px; }
+.app { width: 100%; max-width: 700px; display: flex; flex-direction: column; gap: 10px; }
+.header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); }
 .logo-row { display: flex; align-items: center; gap: 10px; }
-
-.logo {
-  width: 38px; height: 38px;
-  background: var(--green);
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-}
+.logo { width: 38px; height: 38px; background: var(--green); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
 .logo svg { width: 20px; height: 20px; }
-
-.app-name {
-  font-family: 'Instrument Serif', serif;
-  font-size: 20px;
-  color: var(--text);
-  letter-spacing: -0.3px;
-}
-
+.app-name { font-family: 'Instrument Serif', serif; font-size: 20px; color: var(--text); letter-spacing: -0.3px; }
 .app-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
-
 .header-actions { display: flex; gap: 6px; align-items: center; }
-
-.pill {
-  font-size: 10px;
-  padding: 3px 9px;
-  border-radius: 20px;
-  border: 0.5px solid;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-}
+.pill { font-size: 10px; padding: 3px 9px; border-radius: 20px; border: 0.5px solid; font-weight: 500; letter-spacing: 0.02em; }
 .pill-apify { background: #EEEDFE; border-color: #AFA9EC; color: #26215C; }
-.pill-ai    { background: var(--green-l); border-color: #5DCAA5; color: var(--green-t); }
-
-/* MEMORY BAR */
-.memory-bar {
-  display: flex;
-  gap: 5px;
-  flex-wrap: wrap;
-  padding: 9px 14px;
-  background: var(--surface);
-  border: 0.5px solid var(--border);
-  border-radius: var(--radius);
-  align-items: center;
-}
-
-.memory-label {
-  font-size: 10px;
-  color: var(--hint);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-right: 2px;
-}
-
-.mem-chip {
-  font-size: 11px;
-  padding: 3px 10px;
-  border-radius: 20px;
-  border: 0.5px solid var(--border2);
-  color: var(--muted);
-  background: var(--surface2);
-  white-space: nowrap;
-}
-.mem-chip.set {
-  background: var(--green-l);
-  border-color: #5DCAA5;
-  color: var(--green-t);
-  font-weight: 500;
-}
-
-/* CHAT CARD */
-.chat-card {
-  background: var(--surface);
-  border: 0.5px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.messages {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  min-height: 380px;
-  max-height: 520px;
-  overflow-y: auto;
-  scroll-behavior: smooth;
-}
-
+.pill-ai { background: var(--green-l); border-color: #5DCAA5; color: var(--green-t); }
+.memory-bar { display: flex; gap: 5px; flex-wrap: wrap; padding: 9px 14px; background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); align-items: center; }
+.memory-label { font-size: 10px; color: var(--hint); text-transform: uppercase; letter-spacing: 0.06em; margin-right: 2px; }
+.mem-chip { font-size: 11px; padding: 3px 10px; border-radius: 20px; border: 0.5px solid var(--border2); color: var(--muted); background: var(--surface2); white-space: nowrap; }
+.mem-chip.set { background: var(--green-l); border-color: #5DCAA5; color: var(--green-t); font-weight: 500; }
+.chat-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; }
+.messages { padding: 16px; display: flex; flex-direction: column; gap: 12px; min-height: 380px; max-height: 520px; overflow-y: auto; scroll-behavior: smooth; }
 .messages::-webkit-scrollbar { width: 3px; }
 .messages::-webkit-scrollbar-track { background: transparent; }
 .messages::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
-
 .msg { display: flex; gap: 8px; align-items: flex-start; }
 .msg.user { flex-direction: row-reverse; }
-
-.av {
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 10px; font-weight: 600;
-}
+.av { width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; }
 .av.agent { background: var(--green-l); color: var(--green-t); }
-.av.user  { background: var(--surface2); color: var(--muted); }
-
-.bubble {
-  max-width: 83%;
-  font-size: 13.5px;
-  line-height: 1.68;
-  padding: 10px 14px;
-  border-radius: 16px;
-  border: 0.5px solid var(--border);
-  background: var(--surface2);
-  color: var(--text);
-}
-.msg.user  .bubble { background: var(--green-l); border-color: #9FE1CB; color: var(--green-t); border-radius: 16px 4px 16px 16px; }
+.av.user { background: var(--surface2); color: var(--muted); }
+.bubble { max-width: 83%; font-size: 13.5px; line-height: 1.68; padding: 10px 14px; border-radius: 16px; border: 0.5px solid var(--border); background: var(--surface2); color: var(--text); }
+.msg.user .bubble { background: var(--green-l); border-color: #9FE1CB; color: var(--green-t); border-radius: 16px 4px 16px 16px; }
 .msg.agent .bubble { border-radius: 4px 16px 16px 16px; }
-
-/* JOB CARDS */
 .job-cards { display: flex; flex-direction: column; gap: 7px; margin-top: 9px; }
-.jcard {
-  background: var(--surface);
-  border: 0.5px solid var(--border);
-  border-radius: 11px;
-  padding: 10px 13px;
-}
+.jcard { background: var(--surface); border: 0.5px solid var(--border); border-radius: 11px; padding: 10px 13px; }
 .jcard-title { font-size: 13px; font-weight: 500; color: var(--text); }
 .jcard-co { font-size: 12px; color: var(--muted); margin-top: 2px; }
 .jtags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px; }
 .jtag { font-size: 10px; padding: 2px 7px; border-radius: 8px; border: 0.5px solid var(--border2); color: var(--muted); background: var(--surface2); }
-.jtag.li  { background: #E6F1FB; border-color: #85B7EB; color: #0C447C; }
+.jtag.li { background: #E6F1FB; border-color: #85B7EB; color: #0C447C; }
 .jtag.ind { background: #FAECE7; border-color: #F0997B; color: #4A1B0C; }
 .jcard-desc { font-size: 11.5px; color: var(--muted); margin-top: 5px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .jcard-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
 .jcard-link { font-size: 12px; color: var(--green); text-decoration: none; font-weight: 500; }
 .jcard-link:hover { text-decoration: underline; }
-
-/* QUICK BUTTONS */
-.quick-wrap {
-  display: flex; gap: 5px; flex-wrap: wrap;
-  padding: 9px 14px;
-  border-top: 0.5px solid var(--border);
-  background: var(--surface2);
-}
-
-.qbtn {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12px; padding: 5px 12px;
-  border-radius: 20px;
-  border: 0.5px solid var(--border2);
-  background: var(--surface);
-  color: var(--muted);
-  cursor: pointer;
-  transition: all 0.15s;
-}
+.quick-wrap { display: flex; gap: 5px; flex-wrap: wrap; padding: 9px 14px; border-top: 0.5px solid var(--border); background: var(--surface2); }
+.qbtn { font-family: 'DM Sans', sans-serif; font-size: 12px; padding: 5px 12px; border-radius: 20px; border: 0.5px solid var(--border2); background: var(--surface); color: var(--muted); cursor: pointer; transition: all 0.15s; }
 .qbtn:hover { background: var(--bg); color: var(--text); }
-
-/* INPUT ROW */
-.input-row {
-  display: flex; gap: 8px;
-  padding: 11px 14px;
-  border-top: 0.5px solid var(--border);
-}
-
-.chat-input {
-  flex: 1;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13.5px;
-  border: 0.5px solid var(--border2);
-  border-radius: 10px;
-  padding: 9px 13px;
-  background: var(--surface);
-  color: var(--text);
-  outline: none;
-  transition: border-color 0.15s;
-}
+.input-row { display: flex; gap: 8px; padding: 11px 14px; border-top: 0.5px solid var(--border); }
+.chat-input { flex: 1; font-family: 'DM Sans', sans-serif; font-size: 13.5px; border: 0.5px solid var(--border2); border-radius: 10px; padding: 9px 13px; background: var(--surface); color: var(--text); outline: none; transition: border-color 0.15s; }
 .chat-input:focus { border-color: var(--green); }
 .chat-input::placeholder { color: var(--hint); }
-
-.send-btn {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px; font-weight: 500;
-  padding: 9px 18px;
-  border-radius: 10px;
-  border: none;
-  background: var(--green);
-  color: #fff;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: background 0.15s;
-}
+.send-btn { font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 9px 18px; border-radius: 10px; border: none; background: var(--green); color: #fff; cursor: pointer; flex-shrink: 0; transition: background 0.15s; }
 .send-btn:hover { background: var(--green-d); }
 .send-btn:disabled { background: var(--surface2); color: var(--hint); cursor: not-allowed; }
-
-/* PROFILE PANEL */
-.profile-panel {
-  background: var(--surface);
-  border: 0.5px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-.panel-head {
-  padding: 11px 16px;
-  background: var(--surface2);
-  border-bottom: 0.5px solid var(--border);
-  font-size: 13px; font-weight: 500;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.panel-head-title {
-  font-family: 'Instrument Serif', serif;
-  font-size: 15px;
-  color: var(--text);
-}
+.profile-panel { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.panel-head { padding: 11px 16px; background: var(--surface2); border-bottom: 0.5px solid var(--border); font-size: 13px; font-weight: 500; display: flex; align-items: center; justify-content: space-between; }
+.panel-head-title { font-family: 'Instrument Serif', serif; font-size: 15px; color: var(--text); }
 .panel-actions { display: flex; gap: 6px; }
 .panel-body { padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
-
 .field-group { display: flex; flex-direction: column; gap: 3px; }
 .fkey { font-size: 10px; color: var(--hint); text-transform: uppercase; letter-spacing: 0.06em; }
 .fval { font-size: 13px; font-weight: 500; color: var(--text); }
 .fval.empty { font-weight: 400; color: var(--hint); font-size: 12px; font-style: italic; }
-
 .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
 .tag-list { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 2px; }
 .stag { font-size: 11px; padding: 3px 9px; border-radius: 10px; background: var(--green-l); border: 0.5px solid #9FE1CB; color: var(--green-t); }
-
-.notes-area {
-  background: var(--surface2);
-  border: 0.5px solid var(--border);
-  border-radius: 10px;
-  padding: 10px 13px;
-  font-size: 12.5px;
-  color: var(--muted);
-  line-height: 1.6;
-  max-height: 120px;
-  overflow-y: auto;
-  white-space: pre-wrap;
-}
-
-.panel-footer {
-  padding: 10px 16px;
-  border-top: 0.5px solid var(--border);
-  background: var(--surface2);
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 12px;
-  color: var(--hint);
-}
-
-/* TOKEN SETUP */
-.token-setup {
-  background: var(--surface);
-  border: 0.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px 20px;
-}
+.notes-area { background: var(--surface2); border: 0.5px solid var(--border); border-radius: 10px; padding: 10px 13px; font-size: 12.5px; color: var(--muted); line-height: 1.6; max-height: 120px; overflow-y: auto; white-space: pre-wrap; }
+.panel-footer { padding: 10px 16px; border-top: 0.5px solid var(--border); background: var(--surface2); display: flex; gap: 8px; align-items: center; justify-content: space-between; font-size: 12px; color: var(--hint); }
+.token-setup { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 16px 20px; }
 .token-setup h3 { font-family: 'Instrument Serif', serif; font-size: 16px; font-weight: 400; margin-bottom: 6px; }
 .token-setup p { font-size: 12.5px; color: var(--muted); line-height: 1.6; margin-bottom: 10px; }
 .token-row { display: flex; gap: 8px; }
-.token-input {
-  flex: 1; font-family: 'DM Sans', sans-serif; font-size: 13px;
-  border: 0.5px solid var(--border2); border-radius: 8px;
-  padding: 8px 12px; background: var(--surface2); color: var(--text); outline: none;
-}
+.token-input { flex: 1; font-family: 'DM Sans', sans-serif; font-size: 13px; border: 0.5px solid var(--border2); border-radius: 8px; padding: 8px 12px; background: var(--surface2); color: var(--text); outline: none; }
 .token-input:focus { border-color: var(--green); }
-.token-btn {
-  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
-  padding: 8px 16px; border-radius: 8px;
-  border: none; background: var(--green); color: #fff; cursor: pointer;
-}
+.token-btn { font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 8px 16px; border-radius: 8px; border: none; background: var(--green); color: #fff; cursor: pointer; }
 .token-btn:hover { background: var(--green-d); }
-
-/* SPINNER */
-.spinner {
-  display: inline-block; width: 13px; height: 13px;
-  border: 2px solid rgba(29,158,117,0.2);
-  border-top-color: var(--green);
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-  vertical-align: middle; margin-right: 5px;
-}
+.spinner { display: inline-block; width: 13px; height: 13px; border: 2px solid rgba(29,158,117,0.2); border-top-color: var(--green); border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 5px; }
 @keyframes spin { to { transform: rotate(360deg); } }
-
-.divider {
-  height: 0.5px; background: var(--border); margin: 6px 0;
-}
+.divider { height: 0.5px; background: var(--border); margin: 6px 0; }
 </style>
 </head>
 <body>
@@ -399,10 +139,10 @@ body {
   <!-- APIFY TOKEN SETUP -->
   <div class="token-setup" id="token-setup">
     <h3>Connect Apify to search real jobs</h3>
-    <p>Get your free token at <a href="https://console.apify.com/account/integrations" target="_blank" style="color:var(--green);">console.apify.com → Settings → Integrations</a>. Saved only in your browser.</p>
+    <p>Get your free token at <a href="https://console.apify.com/account/integrations" target="_blank" rel="noopener noreferrer" style="color:var(--green);">console.apify.com → Settings → Integrations</a>. Saved only in your browser.</p>
     <div class="token-row">
       <input class="token-input" id="token-input" type="password" placeholder="apify_api_XXXXXXXXXXXXXXXX" />
-      <button class="token-btn" onclick="saveToken()">Save & Start</button>
+      <button class="token-btn" onclick="saveToken()">Save &amp; Start</button>
     </div>
   </div>
 
@@ -417,7 +157,8 @@ body {
       <button class="qbtn" onclick="qs('What should I work on to improve my profile?')">Profile tips</button>
     </div>
     <div class="input-row">
-      <input class="chat-input" id="user-input" placeholder="Tell me anything — I'll remember it..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();send()}" />
+      <input class="chat-input" id="user-input" placeholder="Tell me anything — I'll remember it..."
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();send()}" />
       <button class="send-btn" id="send-btn" onclick="send()">Send</button>
     </div>
   </div>
@@ -441,52 +182,79 @@ body {
   </div>
 
 </div>
-
 <script>
 // ─── STORAGE KEYS ────────────────────────────────────────────
-const KEY_PROFILE  = 'ayein_profile_v2';
-const KEY_HISTORY  = 'ayein_history_v2';
-const KEY_APIFY    = 'ayein_apify_token';
-const KEY_UPDATED  = 'ayein_last_updated';
+const KEY_PROFILE = 'ayein_profile_v2';
+const KEY_HISTORY = 'ayein_history_v2';
+const KEY_APIFY   = 'ayein_apify_token';
+const KEY_UPDATED = 'ayein_last_updated';
 
-// ─── STATE ───────────────────────────────────────────────────
-let profile = loadProfile();
-let history = loadHistory();
-let apifyToken = localStorage.getItem(KEY_APIFY) || '';
-let busy = false;
+// ─── STATE ──────────────────────────────────────────────────
+let profile     = loadProfile();
+let history     = loadHistory();
+let apifyToken  = localStorage.getItem(KEY_APIFY) || '';
+let busy        = false;
+
+// ─── SECURITY HELPERS ────────────────────────────────────
+// FIX #1 & #3: Escape HTML entities to prevent XSS
+function esc(str) {
+  const d = document.createElement('div');
+  d.textContent = str != null ? String(str) : '';
+  return d.innerHTML;
+}
+
+// FIX #1: Validate URLs — only allow http/https to prevent javascript: injection
+function safeUrl(u) {
+  try {
+    const parsed = new URL(u);
+    return (parsed.protocol === 'https:' || parsed.protocol === 'http:') ? u : '#';
+  } catch { return '#'; }
+}
+
+// FIX #3: Escape first, then apply markdown formatting
+function fmt(t) {
+  const d = document.createElement('div');
+  d.textContent = t != null ? String(t) : '';
+  return d.innerHTML
+    .replace(/**(.+?)**/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>');
+}
 
 // ─── PROFILE SCHEMA ──────────────────────────────────────────
 function defaultProfile() {
   return {
-    name: null,
-    targetRole: null,
-    experience: null,
-    skills: null,
-    location: null,
-    country: null,
-    salary: null,
-    jobType: null,
-    industries: null,
-    education: null,
-    companies: null,
-    achievements: null,
-    notes: null
+    name: null, targetRole: null, experience: null, skills: null,
+    location: null, country: null, salary: null, jobType: null,
+    industries: null, education: null, companies: null,
+    achievements: null, notes: null
   };
+}
+
+// FIX #4: Sanitize imported profile — whitelist keys and cap lengths
+function sanitizeProfile(raw) {
+  const safe = defaultProfile();
+  Object.keys(safe).forEach(k => {
+    if (raw[k] == null) return;
+    if (Array.isArray(raw[k])) {
+      safe[k] = raw[k].map(v => String(v).slice(0, 500));
+    } else {
+      safe[k] = String(raw[k]).slice(0, 2000);
+    }
+  });
+  return safe;
 }
 
 function loadProfile() {
   try {
     const raw = localStorage.getItem(KEY_PROFILE);
-    return raw ? {...defaultProfile(), ...JSON.parse(raw)} : defaultProfile();
+    return raw ? { ...defaultProfile(), ...JSON.parse(raw) } : defaultProfile();
   } catch(e) { return defaultProfile(); }
 }
-
 function saveProfile() {
   localStorage.setItem(KEY_PROFILE, JSON.stringify(profile));
   localStorage.setItem(KEY_UPDATED, new Date().toLocaleString('en-IN'));
   updateChips();
 }
-
 function loadHistory() {
   try {
     const raw = localStorage.getItem(KEY_HISTORY);
@@ -494,7 +262,6 @@ function loadHistory() {
     return Array.isArray(arr) ? arr.slice(-40) : [];
   } catch(e) { return []; }
 }
-
 function saveHistory() {
   localStorage.setItem(KEY_HISTORY, JSON.stringify(history.slice(-40)));
 }
@@ -523,30 +290,22 @@ At the END of every reply output this JSON block (update ONLY fields you learned
 [PROFILE]{"name":null,"targetRole":null,"experience":null,"skills":null,"location":null,"country":null,"salary":null,"jobType":null,"industries":null,"education":null,"companies":null,"achievements":null,"notes":null}[/PROFILE]
 NEVER show or mention this block to the user.
 
-JOB SEARCH:
-When the user asks to search for jobs, output:
+JOB SEARCH: When the user asks to search for jobs, output:
 [SEARCH]{"keyword":"<role>","location":"<location>","country":"<2-letter-code>"}[/SEARCH]
-Use profile data to fill in fields. If missing location/country ask first. After the command write something like "Searching LinkedIn and Indeed for you right now..."
+Use profile data to fill in fields. If missing location/country ask first.
+After the command write something like "Searching LinkedIn and Indeed for you right now..."
 
-COVER LETTERS:
-Write full tailored cover letters when asked. Use everything in the profile to personalize. Ask for job description if not provided.
+COVER LETTERS: Write full tailored cover letters when asked. Use everything in the profile to personalize. Ask for job description if not provided.
 
-MEMORY AWARENESS:
-You remember everything across sessions. When the user returns, greet them by name if known. Reference their profile naturally. Never ask for info you already have.
-
-Always end with a question or a clear next step.`;
+MEMORY AWARENESS: You remember everything across sessions. When the user returns, greet them by name if known. Reference their profile naturally. Never ask for info you already have. Always end with a question or a clear next step.`;
 }
 
 // ─── INIT ────────────────────────────────────────────────────
 function init() {
   if (apifyToken) document.getElementById('token-setup').style.display = 'none';
   updateChips();
-
-  // Replay existing messages from history
   if (history.length > 0) {
-    const recent = history.slice(-20);
-    recent.forEach(m => renderMsg(m.role, m.displayText || m.content));
-    // Show a returning user greeting
+    history.slice(-20).forEach(m => renderMsg(m.role, m.displayText || m.content));
     const name = profile.name ? `, ${profile.name}` : '';
     addAgentMsg(`Welcome back${name}! I remember everything from our last chat. What would you like to do today — search for jobs, update your profile, or something else?`, false);
   } else {
@@ -554,7 +313,7 @@ function init() {
   }
 }
 
-// ─── TOKEN ───────────────────────────────────────────────────
+// ─── TOKEN ──────────────────────────────────────────────────
 function saveToken() {
   const val = document.getElementById('token-input').value.trim();
   if (!val) return alert('Please enter your Apify token.');
@@ -564,7 +323,7 @@ function saveToken() {
   addAgentMsg("Apify connected! I can now search real jobs on LinkedIn and Indeed for you. What role and location are you targeting?", true);
 }
 
-// ─── MESSAGES ────────────────────────────────────────────────
+// ─── MESSAGES ────────────────────────────────────────────
 function renderMsg(role, text) {
   const msgs = document.getElementById('messages');
   const wrap = document.createElement('div');
@@ -574,26 +333,20 @@ function renderMsg(role, text) {
   av.textContent = role === 'agent' ? 'AY' : 'You';
   const bubble = document.createElement('div');
   bubble.className = 'bubble';
-  bubble.innerHTML = fmt(text);
+  bubble.innerHTML = fmt(text); // FIX #3: fmt() now escapes before markdown
   wrap.appendChild(av);
   wrap.appendChild(bubble);
   msgs.appendChild(wrap);
   msgs.scrollTop = msgs.scrollHeight;
   return bubble;
 }
-
 function addAgentMsg(text, save) {
   renderMsg('agent', text);
   if (save) {
-    history.push({role:'assistant', content: text, displayText: text});
+    history.push({ role: 'assistant', content: text, displayText: text });
     saveHistory();
   }
 }
-
-function fmt(t) {
-  return t.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
-}
-
 function addTyping() {
   const msgs = document.getElementById('messages');
   const wrap = document.createElement('div');
@@ -603,38 +356,35 @@ function addTyping() {
   msgs.appendChild(wrap);
   msgs.scrollTop = msgs.scrollHeight;
 }
-
 function removeTyping() {
   const el = document.getElementById('typing');
   if (el) el.remove();
 }
-
-function qs(t) { document.getElementById('user-input').value = t; send(); }
+function qs(t) {
+  document.getElementById('user-input').value = t;
+  send();
+}
 
 // ─── SEND ────────────────────────────────────────────────────
 async function send() {
   if (busy) return;
   const input = document.getElementById('user-input');
-  const text = input.value.trim();
+  const text  = input.value.trim();
   if (!text) return;
   input.value = '';
   busy = true;
   document.getElementById('send-btn').disabled = true;
-
   renderMsg('user', text);
-  history.push({role:'user', content: text, displayText: text});
+  history.push({ role: 'user', content: text, displayText: text });
   saveHistory();
   addTyping();
-
-  // Build messages for API — use last 20 turns for context
-  const apiMessages = history.slice(-20).map(m => ({role: m.role, content: m.content}));
-
+  const apiMessages = history.slice(-20).map(m => ({ role: m.role, content: m.content }));
   try {
+    // NOTE: Ensure your Cloudflare Worker checks Origin to prevent unauthorized use of your API key.
+    // In your Worker: if (request.headers.get('Origin') !== 'https://tusharm.in') return new Response('Forbidden',{status:403});
     const res = await fetch('https://anthropic-proxy.tusharmukhopadhyay03.workers.dev', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 1200,
@@ -642,11 +392,9 @@ async function send() {
         messages: apiMessages
       })
     });
-
     const data = await res.json();
     let reply = data.content?.map(b => b.text || '').join('') || 'Something went wrong — please try again.';
 
-    // Extract and apply profile updates
     const pm = reply.match(/\[PROFILE\]([\s\S]*?)\[\/PROFILE\]/);
     if (pm) {
       try {
@@ -654,14 +402,11 @@ async function send() {
         let changed = false;
         Object.keys(updates).forEach(k => {
           if (updates[k] !== null && updates[k] !== undefined) {
-            // Merge arrays, overwrite scalars
             if (Array.isArray(updates[k]) && Array.isArray(profile[k])) {
-              const merged = [...new Set([...profile[k], ...updates[k]])];
-              profile[k] = merged;
+              profile[k] = [...new Set([...profile[k], ...updates[k]])];
             } else if (Array.isArray(updates[k])) {
               profile[k] = updates[k];
             } else if (k === 'notes' && profile[k]) {
-              // Append to notes
               profile[k] = profile[k] + '\n' + updates[k];
             } else {
               profile[k] = updates[k];
@@ -674,7 +419,6 @@ async function send() {
       reply = reply.replace(/\[PROFILE\][\s\S]*?\[\/PROFILE\]/, '').trim();
     }
 
-    // Extract search command
     const sm = reply.match(/\[SEARCH\]([\s\S]*?)\[\/SEARCH\]/);
     let searchP = null;
     if (sm) {
@@ -683,35 +427,34 @@ async function send() {
     }
 
     removeTyping();
-    const displayReply = reply;
-    renderMsg('agent', displayReply);
-    history.push({role:'assistant', content: reply, displayText: displayReply});
+    renderMsg('agent', reply);
+    history.push({ role: 'assistant', content: reply, displayText: reply });
     saveHistory();
-
     if (searchP) await doSearch(searchP);
-
   } catch(e) {
     removeTyping();
     renderMsg('agent', 'Something went wrong — please check your connection and try again.');
   }
-
   busy = false;
   document.getElementById('send-btn').disabled = false;
   input.focus();
 }
 
-// ─── JOB SEARCH ──────────────────────────────────────────────
+// ─── JOB SEARCH ────────────────────────────────────────────
 async function doSearch(p) {
   const msgs = document.getElementById('messages');
   const wrap = document.createElement('div');
   wrap.className = 'msg agent';
   const av = document.createElement('div');
-  av.className = 'av agent'; av.textContent = 'AY';
+  av.className = 'av agent';
+  av.textContent = 'AY';
   const bubble = document.createElement('div');
   bubble.className = 'bubble';
   bubble.style.maxWidth = '93%';
-  bubble.innerHTML = `<span class="spinner"></span>Searching LinkedIn &amp; Indeed for <strong>${p.keyword}</strong> in <strong>${p.location || 'your area'}</strong>...`;
-  wrap.appendChild(av); wrap.appendChild(bubble);
+  // FIX #1: Use esc() for data from the AI response (keyword/location)
+  bubble.innerHTML = `<span class="spinner"></span>Searching LinkedIn &amp; Indeed for <strong>${esc(p.keyword)}</strong> in <strong>${esc(p.location || 'your area')}</strong>...`;
+  wrap.appendChild(av);
+  wrap.appendChild(bubble);
   msgs.appendChild(wrap);
   msgs.scrollTop = msgs.scrollHeight;
 
@@ -720,17 +463,17 @@ async function doSearch(p) {
     return;
   }
 
-  const liUrl = `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(p.keyword)}&location=${encodeURIComponent(p.location||'')}&position=1&pageNum=0`;
-
+  const liUrl = `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(p.keyword)}&location=${encodeURIComponent(p.location || '')}&position=1&pageNum=0`;
   bubble.innerHTML = `<span class="spinner"></span>Running LinkedIn scraper...`;
+
   const [li, ind] = await Promise.allSettled([
-    runApify('curious_coder~linkedin-jobs-scraper', {urls:[liUrl], count:8, scrapeCompany:false}),
-    runApify('valig~indeed-jobs-scraper', {title:p.keyword, location:p.location||'', country:p.country||'in', limit:8})
+    runApify('curious_coder~linkedin-jobs-scraper', { urls: [liUrl], count: 8, scrapeCompany: false }),
+    runApify('valig~indeed-jobs-scraper', { title: p.keyword, location: p.location || '', country: p.country || 'in', limit: 8 })
   ]);
 
   const all = [];
-  if (li.status==='fulfilled' && Array.isArray(li.value)) all.push(...li.value.map(j=>({...j,src:'li'})));
-  if (ind.status==='fulfilled' && Array.isArray(ind.value)) all.push(...ind.value.map(j=>({...j,src:'ind'})));
+  if (li.status === 'fulfilled' && Array.isArray(li.value)) all.push(...li.value.map(j => ({ ...j, src: 'li' })));
+  if (ind.status === 'fulfilled' && Array.isArray(ind.value)) all.push(...ind.value.map(j => ({ ...j, src: 'ind' })));
 
   if (!all.length) {
     bubble.innerHTML = 'No results came back. Check your Apify token has credits, or try a different role / location.';
@@ -742,31 +485,46 @@ async function doSearch(p) {
   const cards = document.createElement('div');
   cards.className = 'job-cards';
 
-  all.slice(0,8).forEach(job => {
+  all.slice(0, 8).forEach(job => {
     const c = document.createElement('div');
     c.className = 'jcard';
-    const title   = job.title || 'Role';
-    const company = job.companyName || job.company || '';
-    const loc     = job.location || job.formattedLocation || '';
-    const desc    = job.description || job.snippet || '';
-    const url     = job.applyUrl || job.jobUrl || job.url || '#';
+
+    // FIX #1: Escape all API-sourced strings before inserting into DOM
+    const title    = job.title || 'Role';
+    const company  = job.companyName || job.company || '';
+    const loc      = job.location || job.formattedLocation || '';
+    const desc     = job.description || job.snippet || '';
+    const url      = safeUrl(job.applyUrl || job.jobUrl || job.url || '#'); // FIX #1: validate URL
     const srcLabel = job.src === 'li' ? 'LinkedIn' : 'Indeed';
     const srcClass = job.src === 'li' ? 'li' : 'ind';
     const type     = job.workType || job.employmentType || '';
     const posted   = job.postedAt || job.date || '';
+
     c.innerHTML = `
-      <div class="jcard-title">${title}</div>
-      <div class="jcard-co">${company}${loc?' · '+loc:''}</div>
+      <div class="jcard-title">${esc(title)}</div>
+      <div class="jcard-co">${esc(company)}${loc ? ' · ' + esc(loc) : ''}</div>
       <div class="jtags">
-        <span class="jtag ${srcClass}">${srcLabel}</span>
-        ${type?`<span class="jtag">${type}</span>`:''}
-        ${posted?`<span class="jtag">${posted}</span>`:''}
+        <span class="jtag ${srcClass}">${esc(srcLabel)}</span>
+        ${type   ? `<span class="jtag">${esc(type)}</span>`   : ''}
+        ${posted ? `<span class="jtag">${esc(posted)}</span>` : ''}
       </div>
-      ${desc?`<div class="jcard-desc">${desc.substring(0,190)}...</div>`:''}
+      ${desc ? `<div class="jcard-desc">${esc(desc.substring(0, 190))}...</div>` : ''}
       <div class="jcard-foot">
-        <a class="jcard-link" href="${url}" target="_blank">View &amp; apply →</a>
-        <button class="qbtn" style="font-size:11px;padding:3px 9px;" onclick="qs('Write a cover letter for the ${title.replace(/'/g,'')} role at ${company.replace(/'/g,'')}')">Cover letter</button>
+        <a class="jcard-link" href="${esc(url)}" target="_blank" rel="noopener noreferrer">View &amp; apply →</a>
       </div>`;
+
+    // FIX #1: Use dataset + addEventListener instead of inline onclick with interpolated strings
+    const clBtn = document.createElement('button');
+    clBtn.className = 'qbtn';
+    clBtn.style.cssText = 'font-size:11px;padding:3px 9px;';
+    clBtn.textContent = 'Cover letter';
+    clBtn.dataset.title   = title;
+    clBtn.dataset.company = company;
+    clBtn.addEventListener('click', () =>
+      qs(`Write a cover letter for the ${clBtn.dataset.title} role at ${clBtn.dataset.company}`)
+    );
+    c.querySelector('.jcard-foot').appendChild(clBtn);
+
     cards.appendChild(c);
   });
 
@@ -778,9 +536,15 @@ async function doSearch(p) {
   msgs.scrollTop = msgs.scrollHeight;
 }
 
+// FIX #2: Apify token moved to Authorization header — no longer exposed in URL query params
 async function runApify(actor, input) {
-  const r = await fetch(`https://api.apify.com/v2/acts/${actor}/runs?token=${apifyToken}`, {
-    method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(input)
+  const r = await fetch(`https://api.apify.com/v2/acts/${actor}/runs`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apifyToken}`  // FIX #2
+    },
+    body: JSON.stringify(input)
   });
   const run = await r.json();
   const runId = run.data?.id;
@@ -788,34 +552,40 @@ async function runApify(actor, input) {
   await pollRun(runId);
   const dsId = run.data?.defaultDatasetId;
   if (!dsId) return [];
-  const d = await fetch(`https://api.apify.com/v2/datasets/${dsId}/items?token=${apifyToken}&limit=20`);
+  const d = await fetch(`https://api.apify.com/v2/datasets/${dsId}/items?limit=20`, {
+    headers: { 'Authorization': `Bearer ${apifyToken}` }  // FIX #2
+  });
   return await d.json();
 }
 
-async function pollRun(runId, max=90000) {
+async function pollRun(runId, max = 90000) {
   const start = Date.now();
-  while (Date.now()-start < max) {
+  while (Date.now() - start < max) {
     await new Promise(r => setTimeout(r, 3500));
-    const r = await fetch(`https://api.apify.com/v2/actor-runs/${runId}?token=${apifyToken}`);
+    const r = await fetch(`https://api.apify.com/v2/actor-runs/${runId}`, {
+      headers: { 'Authorization': `Bearer ${apifyToken}` }  // FIX #2
+    });
     const d = await r.json();
     const s = d.data?.status;
-    if (s==='SUCCEEDED'||s==='FAILED'||s==='ABORTED') break;
+    if (s === 'SUCCEEDED' || s === 'FAILED' || s === 'ABORTED') break;
   }
 }
 
-// ─── CHIPS ───────────────────────────────────────────────────
+// ─── CHIPS ──────────────────────────────────────────────────
 function updateChips() {
   const chip = (id, val, label) => {
     const el = document.getElementById(id);
     if (!el) return;
-    el.textContent = val ? `${label}: ${typeof val === 'object' ? (Array.isArray(val) ? val.slice(0,2).join(', ') : JSON.stringify(val)) : val}` : label;
+    el.textContent = val
+      ? `${label}: ${typeof val === 'object' ? (Array.isArray(val) ? val.slice(0, 2).join(', ') : JSON.stringify(val)) : val}`
+      : label;
     el.classList.toggle('set', !!val);
   };
-  chip('chip-name',   profile.name,       'Name');
-  chip('chip-role',   profile.targetRole, 'Target role');
-  chip('chip-exp',    profile.experience, 'Experience');
-  chip('chip-loc',    profile.location,   'Location');
-  const skills = Array.isArray(profile.skills) ? profile.skills.slice(0,2).join(', ') : profile.skills;
+  chip('chip-name',  profile.name,       'Name');
+  chip('chip-role',  profile.targetRole, 'Target role');
+  chip('chip-exp',   profile.experience, 'Experience');
+  chip('chip-loc',   profile.location,   'Location');
+  const skills = Array.isArray(profile.skills) ? profile.skills.slice(0, 2).join(', ') : profile.skills;
   chip('chip-skills', skills, 'Skills');
   const notesEl = document.getElementById('chip-notes');
   if (notesEl) {
@@ -824,73 +594,109 @@ function updateChips() {
   }
 }
 
-// ─── PROFILE PANEL ───────────────────────────────────────────
+// ─── PROFILE PANEL ─────────────────────────────────────────
 function toggleProfile() {
-  const p = document.getElementById('profile-panel');
+  const p    = document.getElementById('profile-panel');
   const show = p.style.display === 'none';
   p.style.display = show ? 'block' : 'none';
   if (show) renderPanel();
 }
 
+// FIX #4: renderPanel uses esc() for all profile values
 function renderPanel() {
   const body = document.getElementById('panel-body');
-  const skillsArr   = Array.isArray(profile.skills) ? profile.skills : profile.skills ? profile.skills.split(',').map(s=>s.trim()) : [];
-  const indArr      = Array.isArray(profile.industries) ? profile.industries : profile.industries ? profile.industries.split(',').map(s=>s.trim()) : [];
-  const companiesArr = Array.isArray(profile.companies) ? profile.companies : profile.companies ? profile.companies.split(',').map(s=>s.trim()) : [];
+
+  const toArr = val => Array.isArray(val) ? val
+    : val ? String(val).split(',').map(s => s.trim()) : [];
+  const skillsArr   = toArr(profile.skills);
+  const indArr      = toArr(profile.industries);
+  const companiesArr = toArr(profile.companies);
 
   const scalar = (key, label) => {
     const v = profile[key];
-    return `<div class="field-group">
-      <span class="fkey">${label}</span>
-      <span class="fval${v?'':' empty'}">${v || 'Not set yet'}</span>
-    </div>`;
+    const fg = document.createElement('div');
+    fg.className = 'field-group';
+    const sk = document.createElement('span');
+    sk.className = 'fkey';
+    sk.textContent = label;
+    const sv = document.createElement('span');
+    sv.className = v ? 'fval' : 'fval empty';
+    sv.textContent = v ? String(v) : 'Not set yet';  // textContent is inherently safe
+    fg.appendChild(sk);
+    fg.appendChild(sv);
+    return fg;
   };
 
   const tags = (arr, label) => {
-    return `<div class="field-group">
-      <span class="fkey">${label}</span>
-      ${arr.length
-        ? `<div class="tag-list">${arr.map(s=>`<span class="stag">${s}</span>`).join('')}</div>`
-        : `<span class="fval empty">Not set yet</span>`}
-    </div>`;
+    const fg = document.createElement('div');
+    fg.className = 'field-group';
+    const sk = document.createElement('span');
+    sk.className = 'fkey';
+    sk.textContent = label;
+    fg.appendChild(sk);
+    if (arr.length) {
+      const tl = document.createElement('div');
+      tl.className = 'tag-list';
+      arr.forEach(s => {
+        const t = document.createElement('span');
+        t.className = 'stag';
+        t.textContent = s;  // textContent is inherently safe
+        tl.appendChild(t);
+      });
+      fg.appendChild(tl);
+    } else {
+      const sv = document.createElement('span');
+      sv.className = 'fval empty';
+      sv.textContent = 'Not set yet';
+      fg.appendChild(sv);
+    }
+    return fg;
   };
 
-  body.innerHTML = `
-    <div class="field-grid">
-      ${scalar('name','Full name')}
-      ${scalar('targetRole','Target role')}
-      ${scalar('experience','Experience')}
-      ${scalar('location','Location')}
-      ${scalar('country','Country code')}
-      ${scalar('salary','Salary expectation')}
-      ${scalar('jobType','Job type preference')}
-      ${scalar('education','Education')}
-    </div>
-    <div class="divider"></div>
-    ${tags(skillsArr,'Skills')}
-    ${tags(indArr,'Preferred industries')}
-    ${tags(companiesArr,'Past companies')}
-    ${scalar('achievements','Key achievements')}
-    <div class="divider"></div>
-    <div class="field-group">
-      <span class="fkey">Personal notes & context</span>
-      ${profile.notes
-        ? `<div class="notes-area">${profile.notes}</div>`
-        : `<span class="fval empty">Nothing yet — things like "prefers startups", "open to relocation", "needs visa sponsorship" will appear here as you chat</span>`}
-    </div>`;
+  body.innerHTML = '';
+
+  const grid = document.createElement('div');
+  grid.className = 'field-grid';
+  [['name','Full name'],['targetRole','Target role'],['experience','Experience'],
+   ['location','Location'],['country','Country code'],['salary','Salary expectation'],
+   ['jobType','Job type preference'],['education','Education']].forEach(([k,l]) => grid.appendChild(scalar(k,l)));
+  body.appendChild(grid);
+
+  const div1 = document.createElement('div'); div1.className = 'divider'; body.appendChild(div1);
+  body.appendChild(tags(skillsArr, 'Skills'));
+  body.appendChild(tags(indArr, 'Preferred industries'));
+  body.appendChild(tags(companiesArr, 'Past companies'));
+  body.appendChild(scalar('achievements', 'Key achievements'));
+
+  const div2 = document.createElement('div'); div2.className = 'divider'; body.appendChild(div2);
+
+  const notesFg = document.createElement('div');
+  notesFg.className = 'field-group';
+  const notesSk = document.createElement('span');
+  notesSk.className = 'fkey';
+  notesSk.textContent = 'Personal notes & context';
+  notesFg.appendChild(notesSk);
+  if (profile.notes) {
+    const na = document.createElement('div');
+    na.className = 'notes-area';
+    na.textContent = profile.notes;  // textContent is inherently safe
+    notesFg.appendChild(na);
+  } else {
+    const sv = document.createElement('span');
+    sv.className = 'fval empty';
+    sv.textContent = 'Nothing yet — things like "prefers startups", "open to relocation", "needs visa sponsorship" will appear here as you chat';
+    notesFg.appendChild(sv);
+  }
+  body.appendChild(notesFg);
 
   const lu = localStorage.getItem(KEY_UPDATED);
   document.getElementById('last-updated').textContent = lu ? `Last updated: ${lu}` : 'Never updated';
 }
 
-// ─── EXPORT / IMPORT / CLEAR ─────────────────────────────────
+// ─── EXPORT / IMPORT / CLEAR ──────────────────────────────────────
 function exportProfile() {
-  const data = {
-    profile,
-    exportedAt: new Date().toISOString(),
-    version: 2
-  };
-  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const data = { profile, exportedAt: new Date().toISOString(), version: 2 };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = 'ayein-profile.json';
@@ -908,13 +714,14 @@ function importProfile() {
     reader.onload = ev => {
       try {
         const data = JSON.parse(ev.target.result);
-        const imported = data.profile || data;
-        profile = {...defaultProfile(), ...imported};
+        const raw = data.profile || data;
+        // FIX #4: sanitize imported profile data before saving
+        profile = sanitizeProfile(raw);
         saveProfile();
         renderPanel();
         alert('Profile imported successfully!');
       } catch(err) {
-        alert('Could not read the file — make sure it\'s a valid Ayein export.');
+        alert("Could not read the file — make sure it's a valid Ayein export.");
       }
     };
     reader.readAsText(file);
@@ -933,7 +740,7 @@ function clearProfile() {
   alert('Profile cleared. Refresh the page to start fresh.');
 }
 
-// ─── START ───────────────────────────────────────────────────
+// ─── START ─────────────────────────────────────────────────
 init();
 </script>
 </body>
